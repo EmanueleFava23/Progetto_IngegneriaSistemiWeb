@@ -1,0 +1,37 @@
+### Test API Endpoints per Circolo Sportivo
+
+### 1. Ottieni tutti i corsi
+GET http://localhost:3000/api/corsi
+
+### 2. Ottieni corsi con filtri
+GET http://localhost:3000/api/corsi?livello=principiante&prezzo=50
+
+### 3. Ottieni un corso specifico
+GET http://localhost:3000/api/corsi/1
+
+### 4. Crea nuovo corso
+POST http://localhost:3000/api/corsi/nuovo
+Content-Type: application/json
+
+{
+  "nome": "Corso base trident",
+  "livello": "principiante",
+  "prezzo": 50,
+  "max_partecipanti": 15,
+  "data_inizio": "2024-01-15"
+}
+
+### 5. Modifica corso (PATCH)
+PATCH http://localhost:3000/api/corsi/1
+Content-Type: application/json
+
+{
+  "prezzo": 60,
+  "livello": "principiante"
+}
+
+### 6. Elimina corso
+DELETE http://localhost:3000/api/corsi/2
+
+### 7. Test con filtri multipli
+GET http://localhost:3000/api/corsi?livello=principiante&max_partecipanti=20

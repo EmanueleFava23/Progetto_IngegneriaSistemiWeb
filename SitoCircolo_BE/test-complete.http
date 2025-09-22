@@ -1,0 +1,104 @@
+### ===== TEST ENDPOINTS CORSI =====
+
+### 1. Ottieni tutti i corsi
+GET http://localhost:3000/api/corsi
+
+### 2. Ottieni corsi con filtri
+GET http://localhost:3000/api/corsi?livello=principiante&nome=yoga
+
+### 3. Ottieni un corso specifico
+GET http://localhost:3000/api/corsi/1
+
+### 4. Crea nuovo corso
+POST http://localhost:3000/api/corsi/nuovo
+Content-Type: application/json
+
+{
+  "nome": "Yoga mattutino",
+  "livello": "principiante",
+  "categoria": "benessere",
+  "prezzo": 50,
+  "max_partecipanti": 15,
+  "data_inizio": "2024-01-15",
+  "descrizione": "Corso rilassante di yoga per iniziare la giornata"
+}
+
+### 5. Crea secondo corso per test
+POST http://localhost:3000/api/corsi/nuovo
+Content-Type: application/json
+
+{
+  "nome": "Pilates avanzato",
+  "livello": "avanzato",
+  "categoria": "fitness",
+  "prezzo": 80,
+  "max_partecipanti": 10
+}
+
+### 6. Modifica corso (PATCH) - cambia solo prezzo
+PATCH http://localhost:3000/api/corsi/1
+Content-Type: application/json
+
+{
+  "prezzo": 60
+}
+
+### 7. Modifica corso (PATCH) - cambia più campi
+PATCH http://localhost:3000/api/corsi/2
+Content-Type: application/json
+
+{
+  "prezzo": 75,
+  "max_partecipanti": 12,
+  "descrizione": "Corso aggiornato di Pilates per livello avanzato"
+}
+
+### 8. Elimina corso
+DELETE http://localhost:3000/api/corsi/1
+
+### ===== TEST ENDPOINTS LEZIONI =====
+
+### 9. Ottieni tutte le lezioni
+GET http://localhost:3000/api/lezioni
+
+### 10. Ottieni lezioni con filtri
+GET http://localhost:3000/api/lezioni?data=2024-01-15
+
+### 11. Ottieni una lezione specifica
+GET http://localhost:3000/api/lezioni/1
+
+### 12. Elimina lezione
+DELETE http://localhost:3000/api/lezioni/1
+
+### ===== TEST FILTRI AVANZATI CORSI =====
+
+### 13. Filtro per livello
+GET http://localhost:3000/api/corsi?livello=principiante
+
+### 14. Filtro per categoria
+GET http://localhost:3000/api/corsi?categoria=fitness
+
+### 15. Filtro per range di partecipanti
+GET http://localhost:3000/api/corsi?max_partecipanti=15
+
+### 16. Filtri multipli combinati
+GET http://localhost:3000/api/corsi?livello=avanzato&categoria=fitness&max_partecipanti=10
+
+### 17. Ricerca per nome (LIKE)
+GET http://localhost:3000/api/corsi?nome=yoga
+
+### ===== TEST ERRORI =====
+
+### 18. Corso inesistente
+GET http://localhost:3000/api/corsi/999
+
+### 19. Elimina corso inesistente
+DELETE http://localhost:3000/api/corsi/999
+
+### 20. Modifica corso inesistente
+PATCH http://localhost:3000/api/corsi/999
+Content-Type: application/json
+
+{
+  "prezzo": 100
+}

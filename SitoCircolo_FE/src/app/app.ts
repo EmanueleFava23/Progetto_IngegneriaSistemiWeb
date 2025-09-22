@@ -1,22 +1,18 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Navbar } from './componenti/navbar/navbar';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h3>Built-in pipes</h3>
-    <p>Today: {{ today | date:'yyyy-MM-dd' }}</p>
-    <p>Name: {{ name | uppercase }}</p>
-    <p>Chained: {{ ratio | percent:'1.0-5' | uppercase }}</p>
-  `
+  imports: [CommonModule, Navbar, RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
 })
 export class App {
-  today = new Date();
-  name = 'Ada Lovelace';
-  ratio = 0.7566547;
+
 }
 
 bootstrapApplication(App);

@@ -1,0 +1,74 @@
+/* HEADER - Il titolo del modale */
+header {
+    text-align: center; /* Centra il titolo */
+    margin-bottom: 20px; /* Spazio sotto il titolo */
+    margin-top: 20px;
+}
+
+header h2 {
+    color: #1976d2; /* Colore blu per il titolo */
+    margin: 0; /* Rimuove il margine di default */
+}
+
+/* FORM - Il contenitore principale del form */
+form {
+    padding: 24px; /* Spazio interno del form (molto meno di prima!) */
+    background: white; /* Sfondo bianco */
+    border-radius: 8px; /* Angoli arrotondati */
+    max-width: 500px; /* Larghezza massima (invece di width fisso) */
+    width: 100%; /* Usa tutto lo spazio disponibile fino al max-width */
+}
+
+/* CONTAINER - Contiene tutti i campi del form */
+.container {
+    display: flex; /* Abilita Flexbox */
+    flex-direction: column; /* Dispone gli elementi in colonna (uno sotto l'altro) */
+    gap: 20px; /* Spazio uniforme tra tutti gli elementi figli */
+    margin-bottom: 20px; /* Spazio sotto il contenitore, prima dei bottoni */
+}
+
+/* FORM-ROW - Ogni riga del form (label + input) */
+.form-row {
+    display: flex; /* Abilita Flexbox per la riga */
+    align-items: center; /* Allinea label e input al centro verticalmente */
+    gap: 12px; /* Spazio tra label e input */
+}
+
+/* LABEL - Le etichette dei campi */
+label {
+    font-weight: 500; /* Testo semi-grassetto */
+    color: #1976d2; /* Colore blu */
+    min-width: 140px; /* Larghezza minima fissa per allineare tutti gli input */
+    text-align: left; /* Allinea il testo a sinistra */
+}
+
+/* INPUT - I campi di input */
+input {
+    flex: 1; /* Prende tutto lo spazio rimanente nella riga */
+    padding: 8px 12px; /* Spazio interno per il testo */
+    border: 1px solid #ddd; /* Bordo grigio chiaro */
+    border-radius: 4px; /* Angoli leggermente arrotondati */
+    font-size: 14px; /* Dimensione del testo */
+}
+
+select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+}
+
+input:focus {
+    border-color: #1976d2; /* Bordo blu quando è selezionato */
+    outline: none; /* Rimuove il bordo di default del browser */
+}
+
+/* BUTTONS - I bottoni del form */
+button {
+    margin-right: 12px; /* Spazio tra i bottoni */
+    padding: 8px 16px; /* Spazio interno dei bottoni */
+    border-radius: 4px; /* Angoli arrotondati */
+    font-size: 14px; /* Dimensione del testo */
+}

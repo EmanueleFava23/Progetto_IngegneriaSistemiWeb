@@ -7,17 +7,17 @@ const router = express.Router();
 
 
 //PER VEDERE TUTTI I CORSI (CON PARAMETRI)
-router.get("/", async (req, res) => {
+router.get("", async (req, res) => {
 
     const filtri = req.query;
+    let connection;
 
     try {
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
 
         const [results] = await coursesDao.mostraCorsi(connection, filtri);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     } catch (err){
@@ -25,6 +25,31 @@ router.get("/", async (req, res) => {
 
         res.status(400);
         res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
+    }
+});
+
+//CREARE UN CORSO
+router.post("", async (req, res) => {
+    const valori = req.body;
+    let connection;
+
+    try{
+        connection = await db.getConnection();
+
+        const [results] = await coursesDao.creaCorso(connection, valori);
+
+        res.status(200);
+        res.json(results);
+    }
+    catch (err){
+        console.error("routes/corsi.js" , err.message, err.stack);
+
+        res.status(400);
+        res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
     }
 });
 
@@ -33,8 +58,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
 
     const id = req.params.id;
+    let connection;
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
         const [results] = await coursesDao.mostraCorsobyId(connection, id);
 
@@ -47,18 +73,20 @@ router.get("/:id", async (req, res) => {
 
         res.status(400);
         res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
     }
 })
 
 //ELIMINARE UN CORSO
 router.delete("/:id", async (req, res) => {
     const id = req.params.id;
+    let connection;
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
         const [results] = await coursesDao.eliminaCorso(connection, id);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -67,6 +95,8 @@ router.delete("/:id", async (req, res) => {
 
         res.status(400);
         res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
     }
 })
 
@@ -74,13 +104,13 @@ router.delete("/:id", async (req, res) => {
 router.patch("/:id", async (req, res) => {
     const id = req.params.id;
     const valori = req.body;
+    let connection;
 
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
         
         const [results] = await coursesDao.modificaCorso(connection, id, valori);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -89,29 +119,63 @@ router.patch("/:id", async (req, res) => {
 
         res.status(400);
         res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
     }
 });
 
-//CREARE UN CORSO
-router.post("/nuovo", async (req, res) => {
-    const valori = req.body;
+router.get("/:id/iscritti", async (req, res) => {
+    const id = req.params.id;
+    let connection;
 
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
-        const [results] = await coursesDao.creaCorso(connection, valori);
+        const [results] = await coursesDao.mostraIscrittiCorso(connection, id);
 
-        res.setHeader("Content-Type", "application/json");
+
         res.status(200);
         res.json(results);
     }
     catch (err){
         console.error("routes/corsi.js" , err.message, err.stack);
 
-        res.status(400);
+        res.status(500);
         res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release();
     }
 });
+
+router.post("/:id/iscritti", async (req, res) => {
+    const corsoId = req.params.id;
+    const corsista_id = req.body.corsista_id;
+    console.log(req.headers);
+    let connection;
+
+    try{
+        connection = await db.getConnection();
+        console.log(corsoId, corsista_id);
+        const [results] = await coursesDao.iscriviUtenteAlCorso(connection, corsoId, corsista_id);
+
+        res.status(200);
+        res.json(results);
+    }
+    catch (err){
+        if(err.code === 'ER_DUP_ENTRY'){
+            res.status(409).json({ errorMsg: 'Utente già iscritto a questo corso' });
+            console.error("già iscritto");
+        } else {
+            res.status(500).json({ errorMsg: 'Errore generico' });
+            console.error("ritorno questo");
+        }
+
+    } finally {
+        if (connection) await connection.release();
+    }
+});
+
+
 
 
 

@@ -1,1 +1,97 @@
-<p>home works!</p>
+
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    @if (utente) {
+      <h1>Benvenuto {{utente.nome}}!</h1>
+      <p class="hero-subtitle">Pronto per la tua prossima avventura in mare?</p>
+    } @else {
+      <h1>Benvenuto al Circolo Vela Ferrara</h1>
+      <p class="hero-subtitle">Scopri il fascino della vela nel Delta del Po</p>
+    }  
+  </section>
+
+  <!-- Azioni Rapide -->
+  <section class="quick-actions">
+    <h2>Azioni Rapide</h2>
+    @if(isLoading || !ruoloUtente) {
+      <div class="actions-grid">
+        <mat-card class="action-card">
+          <mat-card-content>
+            <mat-icon>hourglass_empty</mat-icon>
+            <h3>Caricamento...</h3>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    } @else {
+      <div class="actions-grid">
+        <mat-card class="action-card corsi-card" routerLink="/corsi">
+          <div class="card-overlay">
+            <mat-card-content>
+              <mat-icon>school</mat-icon>
+              @if(ruoloUtente === 'CORSISTA'){
+                <h3>I miei Corsi</h3>
+                <p>Visualizza e gestisci i corsi a cui sei iscritto</p>
+              } @else if(ruoloUtente === 'SEGRETARIO'){
+              <h3>Gestisci Corsi</h3>
+              <p>Visualizza e gestisci tutti i corsi</p>
+              } @else if(ruoloUtente === 'ISTRUTTORE'){
+              <h3>Corsi da Istruttore</h3>
+              <p>Visualizza i corsi che insegni</p>
+              }
+            </mat-card-content>
+          </div>
+        </mat-card>
+
+        <mat-card class="action-card lezioni-card" routerLink="/lezioni">
+          <div class="card-overlay">
+            <mat-card-content>
+              <mat-icon>sailing</mat-icon>
+              @if(ruoloUtente === 'CORSISTA'){
+                <h3>Le mie Lezioni</h3>
+                <p>Visualizza e gestisci le lezioni a cui sei iscritto</p>
+              } @else if(ruoloUtente === 'SEGRETARIO'){
+              <h3>Gestisci Lezioni</h3>
+              <p>Visualizza e gestisci tutte le lezioni</p>
+              } @else if(ruoloUtente === 'ISTRUTTORE'){
+              <h3>Lezioni da Istruttore</h3>
+              <p>Visualizza le lezioni che insegni</p>
+              }
+            </mat-card-content>
+          </div>
+        </mat-card>
+
+        <mat-card class="action-card documenti-card" routerLink="/documenti">
+          <div class="card-overlay">
+            <mat-card-content>
+              <mat-icon>description</mat-icon>
+              @if (ruoloUtente !== 'SEGRETARIO') {
+                <h3>Documenti</h3>
+                <p>Accedi ai tuoi documenti e certificati</p>
+              } @else {
+              <h3>Gestisci Documenti</h3>
+              <p>Visualizza e gestisci tutti i documenti</p>
+              }
+            </mat-card-content>
+          </div>
+        </mat-card>
+
+        <!-- Card aggiuntive per completare la griglia -->
+        @if(ruoloUtente === 'CORSISTA') {
+          <mat-card class="action-card carnet-card" routerLink="/carnet">
+            <div class="card-overlay">
+              <mat-card-content>
+                <mat-icon>card_membership</mat-icon>
+                <h3>I miei Carnet</h3>
+                <p>Acquista e gestisci i tuoi pacchetti lezione</p>
+              </mat-card-content>
+            </div>
+          </mat-card>
+        }
+
+
+      </div>
+    }
+  </section>
+
+

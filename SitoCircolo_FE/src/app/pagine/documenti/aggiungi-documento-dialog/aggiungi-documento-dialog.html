@@ -1,0 +1,53 @@
+
+<header>
+    @if(dati){
+        <h2>MODIFICA DOCUMENTO</h2>
+    }
+    @else{
+        <h2>CARICA NUOVO DOCUMENTO</h2>
+    }
+</header>
+<div >
+    <form [formGroup]="form">
+        <div class="container">
+            <div class="form-row">
+                <label>Tipologia documento:</label>
+                <select formControlName="tipologia" name="tipologia-documento">
+                    <option value="" disabled selected>Seleziona tipologia</option>
+                    <option value="identita">Documento di Identità</option>
+                    <option value="patente">Patente</option>
+                    <option value="patente nautica">Patente nautica</option>
+                    <option value="brevetto">Brevetto</option>
+                    <option value="certificato medico">Certificato Medico</option>
+                    <option value="altro">Altro</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Numero documento:</label>
+                <input formControlName="num_documento" type="text">
+            </div>
+            <div class="form-row">
+                <label>Data rilascio:</label>
+                <input formControlName="data_rilascio" type="date">
+            </div>
+            <div class="form-row">
+                <label>Data scadenza:</label>
+                <input formControlName="data_scadenza" type="date">
+            </div>
+            @if(ruoloUtente === 'SEGRETARIO'){
+            <div class="form-row">
+                <label>Validato:</label>
+                <input formControlName="validato" type="checkbox">
+            </div>
+            }
+        </div>
+
+        @if(dati){
+            <button mat-button (click)="modificaDocumento()">Salva Modifiche</button>
+        }
+        @else{
+            <button mat-button (click)="caricaDocumento()">Carica Documento</button>
+        }
+        <button mat-button mat-dialog-close>Annulla</button>
+    </form>
+</div>

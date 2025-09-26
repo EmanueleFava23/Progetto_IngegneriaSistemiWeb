@@ -1,1 +1,135 @@
-<p>lezioni works!</p>
+<div class="lezioni-container">
+    <main class="main-content">
+        <header class="page-header-standard">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1 class="page-title-standard">Lezioni disponibili</h1>
+                    <p class="page-subtitle-standard">Lezioni disponibili per l'iscrizione</p>
+                </div>
+                @if(ruoloUtente === 'ISTRUTTORE') {
+                    <button mat-raised-button color="primary" class="add-btn" (click)="dialogNuovaLezione()">
+                        <mat-icon>add</mat-icon>
+                        Aggiungi lezione
+                    </button>
+                }
+            </div>
+        </header>
+
+        <!-- Stato caricamento -->
+        @if (caricamento) {
+            <div class="loading-state" role="status" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Caricamento lezioni in corso...</p>
+            </div>
+        }
+
+        <!-- Stato errore -->
+        @if (errore) {
+            <div class="error-state" role="alert" aria-live="assertive">
+                <p>{{errore}}</p>
+                <button (click)="caricaLezioni()" class="btn-retry">Riprova</button>
+            </div>
+        }
+
+        <!-- Stato corsi -->
+        @if (!caricamento && !errore) {
+            <section class="corsi-grid">
+                @if (lezioniFiltrate.length === 0) {
+                    <div class="no-results">
+                        <h3>Nessuna lezione trovata</h3>
+                        <p>Prova a modificare i filtri di ricerca</p>
+                    </div>
+                }
+                @for (lezione of lezioniFiltrate; track lezione.id){
+                    @if(ruoloUtente === 'CORSISTA' && lezione.stato === 'approvata'){
+                        <app-card [tipo]='"lezione"' 
+                        [dati]="lezione"
+                        (Modifica)="dialogModificaLezione(lezione)"
+                        (Elimina)="eliminaLezione(lezione.id)"
+                        (Iscriviti)="iscriviti(lezione.id)"></app-card>
+                    }
+                    @else if(ruoloUtente !== 'CORSISTA'){
+                        <app-card [tipo]='"lezione"' 
+                        [dati]="lezione"
+                        (Modifica)="dialogModificaLezione(lezione)"
+                        (Elimina)="eliminaLezione(lezione.id)"
+                        (Iscriviti)="iscriviti(lezione.id)"></app-card>
+                    }
+                }
+            </section>
+        }
+    </main>
+
+    <aside class="filtri-section">
+        <section class="filtri">
+
+            <div class="data-group">
+                <label for="Data">Data lezione:</label>
+                <input id="data" type="date" [(ngModel)]="data" (input)="applicaFiltri()">
+            </div>
+
+            <div class="filtro-group">
+                <label for="oraMin">Orario inizio:</label>
+                <input 
+                    id="oraMin"
+                    type="time" 
+                    [(ngModel)]="ora_inizio" 
+                    (change)="applicaFiltri()"
+                    class="filtro-date">
+            </div>
+
+            <div class="filtro-group">
+                <label for="oraMax">Orario fine:</label>
+                <input 
+                    id="oraMax"
+                    type="time" 
+                    [(ngModel)]="ora_fine" 
+                    (change)="applicaFiltri()"
+                    class="filtro-date">
+            </div>
+
+            <div class="filtro-group">
+                <label for="corso">Corso:</label>
+                <select 
+                    id="corso" 
+                    [(ngModel)]="corso_id" 
+                    (change)="applicaFiltri()"
+                    class="filtro-select">
+                    <option value='0'>Tutti i corsi</option>
+                    @for(corso of corsi; track corso.id){
+                        <option [value]="corso.id">{{corso.nome}}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="filtro-group">
+                <label for="stato">Stato lezione:</label>
+                <select 
+                    id="stato" 
+                    [(ngModel)]="stato" 
+                    (change)="applicaFiltri()"
+                    class="filtro-select">
+                    <option value=''>Tutti gli stati</option>
+                    <option value='proposta'>Proposta</option>
+                    <option value='approvata'>Approvata</option>
+                    <option value='completata'>Completato</option>
+                </select>
+            </div>
+
+            <div class="filtri-actions">
+                <button 
+                (click)="resetFiltri()" 
+                class="btn-reset"
+                type="button">
+                Reset Filtri
+                </button>
+                <span class="risultati-count">
+                {{lezioniFiltrate.length}} lezione/i trovata/e
+                </span>
+            </div>
+
+        </section>
+    </aside>
+</div>
+
+

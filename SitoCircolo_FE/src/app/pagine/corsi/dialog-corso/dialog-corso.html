@@ -1,0 +1,51 @@
+<header>
+    @if(dati){
+        <h2>MODIFICA CORSO</h2>
+    }
+    @else{
+        <h2>CARICA NUOVO CORSO</h2>
+    }
+</header>
+<div >
+    <form [formGroup]="form">
+        <div class="container">
+            <div class="form-row">
+                <label>Nome:</label>
+                <input formControlName="nome" type="text">
+            </div>
+            <div class="form-row">
+                <label>Livello:</label>
+                <select formControlName="livello" name="tipologia-documento">
+                    <option value="" disabled selected>Seleziona livello</option>
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="avanzato">Avanzato</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Data Inizio:</label>
+                <input formControlName="data_inizio" type="date">
+            </div>
+            <div class="form-row">
+                <label>Data Fine:</label>
+                <input formControlName="data_fine" type="date">
+            </div>
+            <div class="form-row">
+                <label>Descrizione:</label>
+                <textarea formControlName="descrizione" rows="4"></textarea>
+            </div>
+            <div class="form-row">
+                <label>Max partecipanti:</label>
+                <input formControlName="max_partecipanti" type="number" min="1">
+            </div>
+        </div>
+
+        @if(dati){
+            <button mat-button (click)="modificaCorso()">Salva Modifiche</button>
+        }
+        @else{
+            <button mat-button (click)="caricaCorso()">Carica Corso</button>
+        }
+        <button mat-button mat-dialog-close>Annulla</button>
+    </form>
+</div>

@@ -1,20 +1,21 @@
 const express = require("express");
-const lessonsDao = require("../DAO/documentsDao");
+const documentsDao = require("../DAO/documentsDao");
 const db = require("../db");
 
 const router = express.Router();
 
 
-router.get("/", async (req, res) => {
+router.get("", async (req, res) => {
 
     const filtri = req.query;
+    let connection;
 
     try {
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
+        console.log(filtri);
 
-        const [results] = await lessonsDao.mostraDocumenti(connection, filtri);
+        const [results] = await documentsDao.mostraDocumenti(connection, filtri);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -24,19 +25,42 @@ router.get("/", async (req, res) => {
         res.status(400);
         res.json({errorMsg: err.message});
     } finally {
-        if (connection) await connection.end();
+        if (connection) await connection.release();
+    }
+});
+
+router.post("", async (req, res) => {
+    const valori = req.body;
+    console.log(valori);
+    let connection;
+
+    try{
+        connection = await db.getConnection();
+
+        const [results] = await documentsDao.creaDocumento(connection, valori);
+
+        res.status(200);
+        res.json(results);
+    }
+    catch (err){
+        console.error("routes/documenti.js: ", err.message, err.stack);
+
+        res.status(400);
+        res.json({errorMsg: err.message});
+    } finally {
+        if (connection) await connection.release(); 
     }
 });
 
 router.get("/:id",async (req, res) => {
     const id = req.params.id;
+    let connection;
 
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
-        const [results] = await lessonsDao.mostraDocumentobyId(connection, id);
+        const [results] = await documentsDao.mostraDocumentobyId(connection, id);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -46,19 +70,19 @@ router.get("/:id",async (req, res) => {
         res.status(400);
         res.json({errorMsg: err.message});
     } finally {
-        if (connection) await connection.end();
+        if (connection) await connection.release();
     }
 });
 
 router.delete("/:id", async (req, res) => {
     const id = req.params.id;
+    let connection;
 
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
-        const [results] = await lessonsDao.eliminaDocumento(connection, id);
+        const [results] = await documentsDao.eliminaDocumento(connection, id);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -68,21 +92,21 @@ router.delete("/:id", async (req, res) => {
         res.status(400);
         res.json({errorMsg: err.message});
     } finally {
-        if (connection) await connection.end(); 
+        if (connection) await connection.release(); 
     }
 });
 
 router.patch("/:id", async (req, res) =>{
     const id = req.params.id;
+    let connection;
 
     const valori = req.body;
 
     try{
-        const connection = await db.getConnection();
+        connection = await db.getConnection();
 
-        const [results] = await lessonsDao.modificaDocumento(connection, id, valori);
+        const [results] = await documentsDao.modificaDocumento(connection, id, valori);
 
-        res.setHeader("Content-Type", "application/json");
         res.status(200);
         res.json(results);
     }
@@ -92,30 +116,9 @@ router.patch("/:id", async (req, res) =>{
         res.status(400);
         res.json({errorMsg: err.message});
     } finally {
-        if (connection) await connection.end(); 
+        if (connection) await connection.release(); 
     }
 });
 
-router.post("/new", async (req, res) => {
-    const valori = req.body;
-
-    try{
-        const connection = await db.getConnection();
-
-        const [results] = await lessonsDao.creaDocumento(connection, valori);
-
-        res.setHeader("Content-Type", "application/json");
-        res.status(200);
-        res.json(results);
-    }
-    catch (err){
-        console.error("routes/documenti.js: ", err.message, err.stack);
-
-        res.status(400);
-        res.json({errorMsg: err.message});
-    } finally {
-        if (connection) await connection.end(); 
-    }
-});
 
 module.exports = router;

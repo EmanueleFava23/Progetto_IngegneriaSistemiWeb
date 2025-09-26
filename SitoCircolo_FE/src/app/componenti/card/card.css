@@ -1,0 +1,410 @@
+/* Stili per la card */
+mat-card {
+  max-width: 400px;
+  margin: 16px;
+  border-radius: 12px;
+  background-color: #1976d221;
+  box-shadow: 0 2px 8px rgba(33, 149, 243, 0.426);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+mat-card:hover {
+  box-shadow: 0 6px 20px rgba(33, 149, 243, 0.629);
+  transform: translateY(-2px);
+}
+
+/* Header della card */
+mat-card-header {
+  padding-bottom: 12px;
+}
+
+/* Header migliorato */
+.card-header-enhanced {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.header-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.header-icon mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.badges-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.level-badge, .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.level-badge mat-icon, .status-badge mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+/* Badge livelli corso */
+.level-principiante {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.level-intermedio {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.level-avanzato {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+/* Badge stati */
+.status-proposta {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-approvata {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-completata {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-badge.enrolled {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-badge.validated {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-badge.not-validated {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+/* Data lezione */
+.lesson-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.lesson-date mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+mat-card-title {
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+mat-card-subtitle {
+  color: #666;
+  font-size: 14px;
+  padding: 4px 12px;
+  background: #a4d3f5;
+  border-radius: 16px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+
+
+/* Contenuto della card */
+mat-card-content {
+  padding: 16px;
+}
+
+.descrizione {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.corso-info {
+  margin: 0;
+}
+
+/* Info migliorata */
+.corso-info-enhanced, .lesson-info-enhanced, .carnet-info-enhanced, .document-info-enhanced {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(25, 118, 210, 0.04);
+  border-radius: 8px;
+  border-left: 3px solid #1976d2;
+  transition: all 0.2s ease;
+}
+
+.info-item:hover {
+  background: rgba(25, 118, 210, 0.08);
+  transform: translateX(2px);
+}
+
+.info-item.no-instructor {
+  border-left-color: #f57c00;
+  background: rgba(245, 124, 0, 0.04);
+}
+
+.info-item.notes {
+  border-left-color: #9c27b0;
+  background: rgba(156, 39, 176, 0.04);
+}
+
+.info-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: #1976d2;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-item.no-instructor .info-icon {
+  background: #f57c00;
+}
+
+.info-item.notes .info-icon {
+  background: #9c27b0;
+}
+
+.info-icon mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.info-value.pending {
+  color: #f57c00;
+  font-style: italic;
+}
+
+.info-value.price {
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.info-value.lessons {
+  color: #1976d2;
+  font-weight: 700;
+}
+
+/* Compatibilità con il vecchio stile */
+.info-item dt {
+  font-weight: 500;
+  color: #1976d2;
+  margin: 0;
+}
+
+.info-item dd {
+  margin: 0;
+  color: #333;
+  font-weight: 400;
+}
+
+/* Azioni della card */
+mat-card-actions {
+  padding: 8px 16px 16px 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+mat-card-actions button {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+mat-card-actions button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+mat-card-actions button:hover::before {
+  left: 100%;
+}
+
+/* Colori specifici per azioni */
+mat-card-actions button[class*="delete"], 
+mat-card-actions button:has(mat-icon[fontIcon*="delete"]) {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  color: #d32f2f;
+  border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+mat-card-actions button[class*="delete"]:hover,
+mat-card-actions button:has(mat-icon[fontIcon*="delete"]):hover {
+  background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+}
+
+mat-card-actions button[class*="edit"],
+mat-card-actions button:has(mat-icon[fontIcon*="edit"]) {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1976d2;
+  border: 1px solid rgba(25, 118, 210, 0.2);
+}
+
+mat-card-actions button[class*="edit"]:hover,
+mat-card-actions button:has(mat-icon[fontIcon*="edit"]):hover {
+  background: linear-gradient(135deg, #bbdefb, #90caf9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.2);
+}
+
+mat-card-actions button[class*="join"], 
+mat-card-actions button[class*="enroll"],
+mat-card-actions button:has(mat-icon[fontIcon*="person_add"]),
+mat-card-actions button:has(mat-icon[fontIcon*="shopping_cart"]) {
+  background: linear-gradient(135deg, #e8f5e8, #c8e6c8);
+  color: #2e7d32;
+  border: 1px solid rgba(46, 125, 50, 0.2);
+}
+
+mat-card-actions button[class*="join"]:hover,
+mat-card-actions button[class*="enroll"]:hover,
+mat-card-actions button:has(mat-icon[fontIcon*="person_add"]):hover,
+mat-card-actions button:has(mat-icon[fontIcon*="shopping_cart"]):hover {
+  background: linear-gradient(135deg, #c8e6c8, #a5d6a7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.2);
+}
+
+mat-card-actions button[class*="approve"],
+mat-card-actions button:has(mat-icon[fontIcon*="check"]) {
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+  color: #7b1fa2;
+  border: 1px solid rgba(123, 31, 162, 0.2);
+}
+
+mat-card-actions button[class*="approve"]:hover,
+mat-card-actions button:has(mat-icon[fontIcon*="check"]):hover {
+  background: linear-gradient(135deg, #e1bee7, #ce93d8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(123, 31, 162, 0.2);
+}
+
+/* Icone nei pulsanti */
+mat-card-actions mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Animazioni */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+mat-card {
+  animation: slideInUp 0.3s ease-out;
+}
+

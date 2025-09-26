@@ -1,1 +1,41 @@
-<p>documenti works!</p>
+<!-- CONTENITORE PRINCIPALE CON PADDING -->
+<div class="documenti-container">
+  <!-- HEADER DELLA PAGINA -->
+  <header class="page-header-standard">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title-standard">Documenti caricati</h1>
+        <p class="page-subtitle-standard">Visualizza e modifica i tuoi documenti</p>
+      </div>
+      
+      <!-- BOTTONE PER AGGIUNGERE DOCUMENTO -->
+      <button mat-raised-button color="primary" class="add-button" (click)="DialogNuovoDocumento()">
+        <mat-icon>add</mat-icon>
+        Aggiungi documento
+      </button>
+    </div>
+  </header>
+
+  <!-- SEZIONE DOCUMENTI -->
+  <div class="documents-section">
+  <!-- GRIGLIA DELLE CARD -->
+  <div class="cards-grid">
+    @for(doc of documenti; track doc.id){
+      <app-card [dati]="doc"
+       [tipo]='"documento"'
+       (Modifica)="DialogModificaDocumento($event)"
+       (Elimina)="EliminaDocumento($event)"
+       ></app-card>
+    }
+  </div>
+  
+  <!-- MESSAGGIO SE NON CI SONO DOCUMENTI -->
+  @if(!documenti || documenti.length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">description</mat-icon>
+      <h3>Nessun documento caricato</h3>
+      <p>Inizia caricando il tuo primo documento</p>
+    </div>
+  }
+  </div>
+</div>

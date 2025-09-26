@@ -15,7 +15,7 @@ const mostraDocumenti = async (connection, filtri) => {
 const mostraDocumentobyId = async (connection, id) => {
     const sql = "SELECT * FROM DOCUMENTO WHERE id = ?";
 
-    params = [id];
+    const params = [id];
 
     return await connection.query(sql, params);
 };
@@ -23,7 +23,7 @@ const mostraDocumentobyId = async (connection, id) => {
 const eliminaDocumento = async (connection, id) => {
     const sql = "DELETE FROM DOCUMENTO WHERE id = ?";
 
-    params = [id];
+    const params = [id];
 
     return await connection.query(sql, params);
 };
@@ -51,6 +51,7 @@ const creaDocumento = async (connection, dati) => {
     });
 
     const campiNotNull = Object.keys(datiNotNull);
+
     const valori = Object.values(datiNotNull);
     const placeholders = campiNotNull.map(() => '?');
 

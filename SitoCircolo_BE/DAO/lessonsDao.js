@@ -12,6 +12,7 @@ const mostraLezioni = async (connection, filtri) => {
     return await connection.query(sql, params);
 };
 
+
 const mostraLezionebyId = async (connection, id) => {
     const sql = "SELECT * FROM LEZIONE WHERE id = ?";
 
@@ -28,13 +29,6 @@ const eliminaLezione = async (connection, id) => {
     return await connection.query(sql, params);
 };
 
-const eliminaLezioni = async (connection, corso) => {
-    const sql = "DELETE FROM LEZIONE WHERE corso_id = ?";
-
-    corso_id = Object.values(corso);
-
-    return await connection.query(sql, corso_id);
-};
 
 const modificaLezione = async (connection, id, valori) => {
     const campi = Object.keys(valori);
@@ -67,5 +61,24 @@ const creaLezione = async (connection, dati) => {
     return await connection.query(sql, valori);
 };
 
+const prenotaLezione = async (connection, dati) => {
 
-module.exports = {mostraLezionebyId, mostraLezioni, eliminaLezioni, modificaLezione, creaLezione, eliminaLezione};
+
+
+    sql = `INSERT INTO PARTECIPA_A (corsista_id, lezione_id) VALUES (?, ?)`;
+    const params = [dati.userId, dati.lezione_id];
+
+    return await connection.query(sql, params);
+};
+
+const mostraPrenotazione = async (connection, lezione_id, corsista_id) => {
+    let sql = `SELECT * FROM PARTECIPA_A 
+               WHERE lezione_id = ? AND corsista_id = ?`;
+    const params = [lezione_id, corsista_id];
+    
+    return await connection.query(sql, params);
+}
+
+
+
+module.exports = {mostraLezionebyId, mostraLezioni, modificaLezione, creaLezione, eliminaLezione, prenotaLezione, mostraPrenotazione};

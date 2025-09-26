@@ -1,0 +1,76 @@
+/* HEADER DELLA PAGINA USANO STILI GLOBALI */
+
+/* CONTENITORE PRINCIPALE */
+.documenti-container {
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+/* BOTTONE AGGIUNGI */
+.add-button {
+  flex-shrink: 0;
+  height: fit-content;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  transition: all 0.3s ease;
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+}
+
+.add-button mat-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* SEZIONE DOCUMENTI */
+.documents-section {
+  min-height: 400px; /* Altezza minima per evitare salti di layout */
+}
+
+/* GRIGLIA DELLE CARD */
+.cards-grid {
+  display: grid; /* Usa CSS Grid per layout ordinato */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Colonne responsive */
+  gap: 20px; /* Spazio tra le card */
+  margin-top: 0;
+}
+
+/* STATO VUOTO (quando non ci sono documenti) */
+.empty-state {
+  display: flex;
+  flex-direction: column; /* Impila gli elementi in verticale */
+  align-items: center; /* Centra orizzontalmente */
+  justify-content: center; /* Centra verticalmente */
+  padding: 60px 20px; /* Padding generoso */
+  text-align: center; /* Testo centrato */
+  color: #666; /* Colore grigio */
+  min-height: 300px; /* Altezza minima */
+}
+
+.empty-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+  color: #bbb;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0; /* Margini del titolo */
+  font-size: 20px; /* Dimensione del titolo */
+  font-weight: 500; /* Peso del font */
+}
+
+.empty-state p {
+  margin: 0; /* Rimuove margini */
+  font-size: 14px; /* Dimensione più piccola */
+}
+

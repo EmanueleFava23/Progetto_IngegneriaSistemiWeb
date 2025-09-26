@@ -1,0 +1,292 @@
+<!-- SFONDO CON IMMAGINE -->
+<div class="login-background">
+  
+  <!-- CONTAINER PRINCIPALE -->
+  <div class="login-container">
+    
+    <header>
+      <div class="logo-container">
+        <h1>Circolo Nautico Ferrara</h1>
+      </div>
+      <h2>Benvenuto</h2>
+      @if(!register){
+        <p>Accedi al tuo account per continuare</p>
+      }
+      @else {
+        <p>Registrati per poter accedere al portale</p>
+      }
+    </header>
+    
+    @if(!register){
+      <form (ngSubmit)="SubmitLogin()" #loginForm="ngForm" class="login-form">
+      
+      <!-- USERNAME -->
+      <div class="form-group">
+        <div class="input-container">
+          <input 
+            type="text" 
+            id="username" 
+            name="username"
+            [(ngModel)]="username" 
+            required 
+            placeholder="Username"
+            #usernameField="ngModel"
+            class="form-input"
+          />
+        </div>
+        @if (usernameField.invalid && usernameField.touched) {
+          <div class="error-text">
+            Username obbligatorio
+          </div>
+        }
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="form-group">
+        <div class="input-container">
+          <input 
+            type="password" 
+            id="password" 
+            name="password"
+            [(ngModel)]="password" 
+            required 
+            placeholder="Password"
+            #passwordField="ngModel"
+            class="form-input"
+          />
+        </div>
+        @if (passwordField.invalid && passwordField.touched) {
+          <div class="error-text">
+            Password obbligatoria
+          </div>
+        }
+      </div>
+
+      <!-- BOTTONE LOGIN -->
+      <button 
+        type="submit" 
+        [disabled]="loginForm.invalid"
+        class="login-btn"
+      >
+        <span>Accedi</span>
+      </button>
+
+      <!-- ERRORE -->
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+    </form>
+    
+    <!-- FOOTER -->
+    <footer>
+      <p>Non hai un account? <a class="register-link" (click)="registrazione()">Registrati</a></p>
+    </footer>
+
+    }
+    @else {
+      <form (ngSubmit)="SubmitRegistrazione()" #loginForm="ngForm" class="login-form">
+
+
+        <!-- CAMPI REGISTRAZIONE -->
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              [(ngModel)]="nome"
+              required
+              placeholder="Nome*"
+              #nameField="ngModel"
+              class="form-input"
+              >
+          </div>
+          @if (nameField.invalid && nameField.touched) {
+          <div class="error-text">
+            Nome obbligatorio
+          </div>
+        }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="text"
+              id="cognome"
+              name="cognome"
+              [(ngModel)]="cognome"
+              required
+              placeholder="Cognome*"
+              #surnameField="ngModel"
+              class="form-input"
+              >
+          </div>
+          @if (surnameField.invalid && surnameField.touched) {
+          <div class="error-text">
+            Cognome obbligatorio
+          </div>
+        }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              placeholder="Email*"
+              #emailField="ngModel"
+              class="form-input"
+              >
+          </div>
+          @if (emailField.invalid && emailField.touched) {
+          <div class="error-text">
+            Email obbligatoria
+          </div>
+        }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="text"
+              id="cod_fisc"
+              name="cod_fisc"
+              [(ngModel)]="cod_fisc"
+              placeholder="Codice Fiscale"
+              #codfiscField="ngModel"
+              class="form-input"
+              >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              [(ngModel)]="telefono"
+              placeholder="Telefono"
+              #phoneField="ngModel"
+              class="form-input"
+              >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input
+              type="date"
+              id="data_nascita"
+              name="data_nascita"
+              [(ngModel)]="data_nascita"
+              required
+              placeholder="Data di Nascita*"
+              #dataNascitaField="ngModel"
+              class="form-input"
+              >
+          </div>
+          @if (dataNascitaField.invalid && dataNascitaField.touched) {
+            <div class="error-text">
+              Data di nascita obbligatoria
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <select
+              id="ruolo"
+              name="ruolo"
+              [(ngModel)]="ruolo"
+              required
+              #ruoloField="ngModel"
+              class="form-input"
+            >
+              <option value="" disabled>Seleziona Ruolo*</option>
+              @for (role of availableRoles; track role) {
+                <option [value]="role">{{ role }}</option>
+              }
+            </select>
+          </div>
+          @if (ruoloField.invalid && ruoloField.touched) {
+            <div class="error-text">
+              Ruolo obbligatorio
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input 
+              type="text" 
+              id="username" 
+              name="username"
+              [(ngModel)]="username" 
+              required 
+              placeholder="Username*"
+              #usernameField="ngModel"
+              class="form-input"
+            />
+          </div>
+          @if (usernameField.invalid) {
+          <div class="error-text">
+            Username obbligatorio
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <input 
+              type="password" 
+              id="password" 
+              name="password"
+              [(ngModel)]="password" 
+              required 
+              placeholder="Password*"
+              #passwordField="ngModel"
+              class="form-input"
+            />
+          </div>
+          @if (passwordField.invalid) {
+            <div class="error-text">
+              Password obbligatoria
+            </div>
+          }
+        </div>
+
+              <!-- BOTTONE DI REGISTRAZIONE -->
+        <button 
+        type="submit" 
+        [disabled]="loginForm.invalid"
+        class="login-btn"
+        >
+        <span>Registrati</span>
+        
+        </button>
+        
+        @if (errorMessage) {
+          <div class="error-message">
+            {{ errorMessage }}
+          </div>
+        }
+      </form>
+
+      <footer>
+        <p>Hai già un account? <a class="register-link" (click)="login()">Accedi</a></p>
+        <p><small>*Campi Obbligatori</small></p>
+      </footer> 
+      
+
+    }
+    
+    
+  </div>
+</div>
+

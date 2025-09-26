@@ -1,5 +1,3 @@
-const db = require("../db");
-
 const mostraCorsi = async (connection, filtri) => {
 
     let sql = 'SELECT * FROM CORSO WHERE 1=1';
@@ -39,7 +37,7 @@ const mostraCorsobyId = async (connection, id) => {
 }
 
 const creaCorso = async (connection, dati) => {
-    // Rimuovi i campi undefined/null
+    
     const valoriNotNull = {};
     
     Object.keys(dati).forEach(key => {
@@ -71,13 +69,37 @@ const modificaCorso = async (connection, id, valori) => {
     const valoriArray = Object.values(valori);
     
     // Costruisci array di "campo = ?" e poi uniscili con join
-    const setClauses = campi.map(campo => `${campo} = ?`);
-    const sql = `UPDATE CORSO SET ${setClauses.join(', ')} WHERE id = ?`;
-    
+    const CampiCompleti = campi.map(campo => `${campo} = ?`);
+    const sql = `UPDATE CORSO SET ${CampiCompleti.join(', ')} WHERE id = ?`;
+
     // Aggiungi l'id alla fine dei parametri
     const params = [...valoriArray, id];
     
     return await connection.query(sql, params);
 };
 
-module.exports = {mostraCorsi, mostraCorsobyId, creaCorso, eliminaCorso, modificaCorso };
+const mostraIscrittiCorso = async (connection, corsoId) => {
+    const sql = `
+        SELECT U.*
+        FROM UTENTE as U
+        JOIN ISCRITTO_A as I ON U.id = I.corsista_id
+        WHERE I.corso_id = ?
+    `;
+
+    const params = [corsoId];
+
+    return await connection.query(sql, params);
+};
+
+const iscriviUtenteAlCorso = async (connection, corsoId, utenteId) => {
+    const sql = `
+        INSERT INTO ISCRITTO_A (corsista_id, corso_id)
+        VALUES (?, ?)
+    `;
+
+    const params = [utenteId, corsoId];
+
+    return await connection.query(sql, params);
+};
+
+module.exports = {mostraCorsi, mostraCorsobyId, creaCorso, eliminaCorso, modificaCorso, mostraIscrittiCorso, iscriviUtenteAlCorso };

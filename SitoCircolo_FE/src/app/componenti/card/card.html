@@ -1,0 +1,361 @@
+
+<!--CARD PER I CORSI-->
+@if (tipo === "corso") {
+    <mat-card>
+        <div class="card-header-enhanced">
+            <div class="header-icon">
+                <mat-icon>school</mat-icon>
+            </div>
+            <div class="header-content">
+                <mat-card-title>{{dati.nome}}</mat-card-title>
+                <div class="badges-container">
+                    <span class="level-badge" [class]="'level-' + dati.livello">
+                        <mat-icon>stars</mat-icon>
+                        {{dati.livello}}
+                    </span>
+                    @if(dati.isIscritto){
+                        <span class="status-badge enrolled">
+                            <mat-icon>check_circle</mat-icon>
+                            ISCRITTO
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <mat-card-content>
+            @if (dati.descrizione){
+                <p class="descrizione">
+                    {{dati.descrizione}}
+                </p>
+            }
+
+            <div class="corso-info-enhanced">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>event</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Inizio</span>
+                        <span class="info-value">{{formattaData(dati.data_inizio)}}</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>event_available</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Fine</span>
+                        <span class="info-value">{{formattaData(dati.data_fine)}}</span>
+                    </div>
+                </div>
+                @if(ruoloUtente !== 'CORSISTA'){
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <mat-icon>person</mat-icon>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Creato da</span>
+                            <span class="info-value">{{getNomeSegretario(dati.creato_da)}}</span>
+                        </div>
+                    </div>
+                }
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>group</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Iscritti</span>
+                        <span class="info-value">
+                            {{dati.num_iscritti}}@if (dati.max_partecipanti) {/{{dati.max_partecipanti}}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+            @if(ruoloUtente === 'SEGRETARIO'){
+                <button (click)="Elimina.emit(dati)">
+                    <mat-icon>delete</mat-icon>
+                    Elimina
+                </button>
+                <button (click)="Modifica.emit(dati)">
+                    <mat-icon>edit</mat-icon>
+                    Modifica
+                </button>
+            }
+            @if(ruoloUtente === 'CORSISTA'){
+                <button (click)="Iscriviti.emit(dati)">
+                    <mat-icon>person_add</mat-icon>
+                    Iscriviti
+                </button>
+            }
+        </mat-card-actions>
+    </mat-card>
+}
+
+<!--CARD PER I CARNET-->
+@if(tipo === "carnet"){
+    <mat-card>
+        <div class="card-header-enhanced">
+            <div class="header-icon">
+                <mat-icon>card_membership</mat-icon>
+            </div>
+            <div class="header-content">
+                <mat-card-title>{{dati.tipo_lezioni}}</mat-card-title>
+                @if(dati.descrizione) {
+                    <p class="descrizione">{{dati.descrizione}}</p>
+                }
+            </div>
+        </div>
+
+        <mat-card-content>
+            <div class="carnet-info-enhanced">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>euro</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Prezzo</span>
+                        <span class="info-value price">{{dati.prezzo}} €</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>confirmation_number</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Lezioni incluse</span>
+                        <span class="info-value lessons">{{dati.num_lezioni}}</span>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button (click)="Iscriviti.emit(dati)">
+                <mat-icon>shopping_cart</mat-icon>
+                Aggiungi al carrello
+            </button>
+        </mat-card-actions>
+    </mat-card>
+}
+
+<!--CARD PER I DOCUMENTI-->
+@if(tipo === "documento"){
+    <mat-card>
+        <div class="card-header-enhanced">
+            <div class="header-icon">
+                <mat-icon>description</mat-icon>
+            </div>
+            <div class="header-content">
+                <mat-card-title>{{dati.tipologia}}</mat-card-title>
+                <div class="badges-container">
+                    @if(dati.validato){
+                        <span class="status-badge validated">
+                            <mat-icon>verified</mat-icon>
+                            VALIDATO
+                        </span>
+                    }
+                    @else {
+                        <span class="status-badge not-validated">
+                            <mat-icon>pending</mat-icon>
+                            NON VALIDATO
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <mat-card-content>
+            <div class="document-info-enhanced">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>event</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Data rilascio</span>
+                        <span class="info-value">{{formattaData(dati.data_rilascio)}}</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <mat-icon>event_busy</mat-icon>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Data scadenza</span>
+                        <span class="info-value">{{formattaData(dati.data_scadenza)}}</span>
+                    </div>
+                </div>
+                @if(ruoloUtente === 'SEGRETARIO'){
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <mat-icon>person</mat-icon>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Caricato da</span>
+                            <span class="info-value">{{getNomeCorsista(dati.proprietario_id)}}</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button (click)="Elimina.emit(dati)">
+                <mat-icon>delete</mat-icon>
+                Elimina
+            </button>
+            <button (click)="Modifica.emit(dati)">
+                <mat-icon>edit</mat-icon>
+                Modifica
+            </button>
+        </mat-card-actions>
+    </mat-card>
+}
+
+@if(tipo === "lezione"){
+    <mat-card>
+        <div class="card-header-enhanced">
+            <div class="header-icon">
+                <mat-icon>sailing</mat-icon>
+            </div>
+            <div class="header-content">
+                <mat-card-title>{{getNomeCorso(dati.corso_id)}}</mat-card-title>
+                <div class="lesson-date">
+                    <mat-icon>schedule</mat-icon>
+                    {{formattaData(dati.data)}} • {{dati.ora_inizio}} - {{dati.ora_fine}}
+                </div>
+                <div class="badges-container">
+                    @if(ruoloUtente !== 'CORSISTA'){
+                        <span class="status-badge" [class]="'status-' + dati.stato">
+                            <mat-icon>
+                                @switch (dati.stato) {
+                                    @case ('proposta') { pending }
+                                    @case ('approvata') { check_circle }
+                                    @case ('completata') { done_all }
+                                    @default { help }
+                                }
+                            </mat-icon>
+                            {{dati.stato}}
+                        </span>
+                    }
+                    @if(dati.isIscritto){
+                        <span class="status-badge enrolled">
+                            <mat-icon>person_check</mat-icon>
+                            PRENOTATO
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <mat-card-content>
+            <div class="lesson-info-enhanced">
+                @if(dati.istruttore_id) {
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <mat-icon>person</mat-icon>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Istruttore</span>
+                            <span class="info-value">{{getNomeIstruttore(dati.istruttore_id)}}</span>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="info-item no-instructor">
+                        <div class="info-icon">
+                            <mat-icon>person_search</mat-icon>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Istruttore</span>
+                            <span class="info-value pending">Da assegnare</span>
+                        </div>
+                    </div>
+                }
+                
+                @if (ruoloUtente !== 'CORSISTA') {
+                    @if(dati.proposta_da) {
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <mat-icon>lightbulb</mat-icon>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Proposta da</span>
+                                <span class="info-value">{{getNomeIstruttore(dati.proposta_da)}}</span>
+                            </div>
+                        </div>
+                    }
+                    @if(dati.approvata_da) {
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <mat-icon>verified</mat-icon>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Approvata da</span>
+                                <span class="info-value">{{getNomeIstruttore(dati.approvata_da)}}</span>
+                            </div>
+                        </div>
+                    }
+                }
+                
+                @if(dati.note) {
+                    <div class="info-item notes">
+                        <div class="info-icon">
+                            <mat-icon>note</mat-icon>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Note</span>
+                            <span class="info-value">{{dati.note}}</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+            @if(ruoloUtente === 'CORSISTA'){
+                <button (click)="Iscriviti.emit(dati)">
+                    <mat-icon>person_add</mat-icon>
+                    Prenota
+                </button>
+            }
+            @if(ruoloUtente === 'ISTRUTTORE'){
+                <button (click)="Elimina.emit(dati)">
+                    <mat-icon>delete</mat-icon>
+                    Elimina
+                </button>
+                <button (click)="Modifica.emit(dati)">
+                    <mat-icon>edit</mat-icon>
+                    Modifica
+                </button>
+                @if(dati.istruttore_id === null){
+                    <button (click)="Iscriviti.emit(dati)">
+                        <mat-icon>person_add</mat-icon>
+                        Svolgi
+                    </button>
+                }
+            }
+            @if(ruoloUtente === 'SEGRETARIO'){
+                <button (click)="Elimina.emit(dati)">
+                    <mat-icon>delete</mat-icon>
+                    Elimina
+                </button>
+                <button (click)="Modifica.emit(dati)">
+                    <mat-icon>edit</mat-icon>
+                    Modifica
+                </button>
+                @if(dati.stato !== 'approvata'){
+                    <button (click)="Iscriviti.emit(dati)">
+                        <mat-icon>check_circle</mat-icon>
+                        Approva
+                    </button>
+                }
+            }
+        </mat-card-actions>
+    </mat-card>
+}
+
+
+

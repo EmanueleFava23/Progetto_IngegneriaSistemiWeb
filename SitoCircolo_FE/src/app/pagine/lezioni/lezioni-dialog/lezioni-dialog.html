@@ -1,0 +1,47 @@
+<header>
+    @if(dati && dati.id){
+        <h2>MODIFICA LEZIONE</h2>
+    }
+    @else{
+        <h2>CREA NUOVA LEZIONE</h2>
+    }
+</header>
+<div >
+    <form [formGroup]="form">
+        <div class="container">
+
+            <div class="form-row">
+                <label>Corso:</label>
+                <select formControlName="corso_id">
+                    @for (corso of corsi; track corso.id) {
+                        <option [value]="corso.id">{{ corso.nome }}</option>
+                    }
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Data Lezione:</label>
+                <input formControlName="data" type="date">
+            </div>
+            <div class="form-row">
+                <label>Orario inizio:</label>
+                <input formControlName="ora_inizio" type="time">
+            </div>
+            <div class="form-row">
+                <label>Orario fine:</label>
+                <input formControlName="ora_fine" type="time">
+            </div>
+            <div class="form-row">
+                <label>Note:</label>
+                <textarea formControlName="note" rows="3" placeholder="Aggiungi una descrizione o note per questa lezione..."></textarea>
+            </div>
+        </div>
+
+        @if(dati && dati.id){
+            <button mat-button (click)="modificaLezione()">Salva Modifiche</button>
+        }
+        @else{
+            <button mat-button (click)="caricaLezione()">Carica nuova lezione</button>
+        }
+        <button mat-button mat-dialog-close>Annulla</button>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+
+
+/* Sidebar */
+mat-sidenav {
+    background-color: rgb(6, 154, 195);
+    overflow: visible;
+    width: 320px;
+}
+
+/* Link della sidebar */
+mat-sidenav mat-nav-list mat-list-item {
+    padding: 0 16px;
+}
+
+mat-sidenav mat-nav-list mat-list-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    text-decoration: none;
+    color: white;
+    overflow: visible;
+}
+
+/* Header principale */
+.top-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+}
+
+.top-header h1 {
+    margin: 0;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-left: 16px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Pulsante hamburger */
+.menu-button {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) ;
+}
+
+.menu-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*icona hamburger*/
+.menu-button mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+
+

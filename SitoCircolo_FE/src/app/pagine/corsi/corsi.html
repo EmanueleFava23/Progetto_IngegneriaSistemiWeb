@@ -1,1 +1,129 @@
-<p>corsi works!</p>
+<div class="corsi-container">
+  <!-- Contenuto principale a sinistra -->
+  <main class="main-content">
+    <header class="page-header-standard">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="page-title-standard">Corsi Disponibili</h1>
+          <p class="page-subtitle-standard">Trova il corso perfetto per te utilizzando i filtri e la ricerca</p>
+        </div>
+        @if(ruoloUtente === 'SEGRETARIO'){
+          <button mat-raised-button color="primary" class="add-btn" (click)="DialogNuovoCorso()">
+            <mat-icon>add</mat-icon>
+            Aggiungi corso
+          </button>
+        }
+      </div>
+    </header>
+
+    <!-- Stato di caricamento -->
+    @if (caricamento) {
+      <div class="loading-state" role="status" aria-live="polite">
+      <div class="spinner"></div>
+      <p>Caricamento corsi in corso...</p>
+      </div>
+    }
+
+    <!-- Messaggio di errore -->
+    @if (errore) {
+      <div class="error-state" role="alert" aria-live="assertive">
+      <p>{{errore}}</p>
+      <button (click)="caricaCorsi()" class="btn-retry">Riprova</button>
+      </div>
+    }
+
+    <!-- Lista dei corsi -->
+    @if (!caricamento && !errore) {
+      <section class="corsi-grid">
+      @if (corsiFiltrati.length === 0) {
+        <div class="no-results">
+        <h3>Nessun corso trovato</h3>
+        <p>Prova a modificare i filtri di ricerca</p>
+        </div>
+      }
+
+      <!-- Card dei corsi -->
+      @for (corso of corsiFiltrati; track corso.id) {
+        <app-card [dati]="corso"
+         [tipo]='"corso"'
+         (Modifica)="DialogModificaCorso(corso)"
+         (Elimina)="eliminaCorso(corso)"
+         (Iscriviti)="Iscriviti(corso)"></app-card>
+      }
+      </section>
+    }
+  </main>
+
+  <!-- Sezione Ricerca e Filtri a destra -->
+  <aside class="filtri-section">
+    <section class="filtri-card">
+  
+      <div class="search-group">
+        <label for="search">Cerca corsi:</label>
+        <input 
+          id="search"
+          type="text" 
+          [(ngModel)]="ricerca" 
+          (input)="applicaFiltri()"
+          placeholder="Cerca per nome o descrizione..."
+          class="search-input">
+      </div>
+
+      <div class="filtri-row">
+        
+        <div class="filtro-group">
+          <label for="livello">Livello:</label>
+          <select 
+            id="livello"
+            [(ngModel)]="livelloSelezionato" 
+            (change)="applicaFiltri()"
+            class="filtro-select">
+            <option value="">Tutti i livelli</option>
+            @for (livello of livelli; track livello) {
+              <option [value]="livello">
+              {{livello}}
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Filtro Data Inizio Minima -->
+        <div class="filtro-group">
+          <label for="dataMin">Data inizio da:</label>
+          <input 
+            id="dataMin"
+            type="date" 
+            [(ngModel)]="dataInizioMin" 
+            (change)="applicaFiltri()"
+            class="filtro-date">
+        </div>
+
+        <!-- Filtro Data Inizio Massima -->
+        <div class="filtro-group">
+          <label for="dataMax">Data inizio fino a:</label>
+          <input 
+            id="dataMax"
+            type="date" 
+            [(ngModel)]="dataInizioMax" 
+            (change)="applicaFiltri()"
+            class="filtro-date">
+        </div>
+
+      </div>
+
+      <!-- Pulsante Reset Filtri -->
+      <div class="filtri-actions">
+        <button 
+          (click)="resetFiltri()" 
+          class="btn-reset"
+          type="button">
+          Reset Filtri
+        </button>
+        <span class="risultati-count">
+          {{corsiFiltrati.length}} corso/i trovato/i
+        </span>
+      </div>
+
+    </section>
+  </aside>
+</div>

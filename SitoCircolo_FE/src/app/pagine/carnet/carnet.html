@@ -1,0 +1,92 @@
+
+<div class="carnet-container">
+  <!-- PRINCIPALE -->
+  <main class="main-content">
+    <header class="page-header-standard">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="page-title-standard">Carnet</h1>
+          <p class="page-subtitle-standard">Acquista carnet per poter partecipare alle lezioni del circolo</p>
+        </div>
+      </div>
+    </header>
+
+
+      <!-- CARNET DISPONIBILI -->
+      <section class="carnet-grid">
+        <h2>Carnet disponibili</h2>
+        <div class="cards-grid">
+          @for (carnet of carnetDisponibili; track carnet.id) {
+            <app-card [dati]="carnet" [tipo]="'carnet'" (Iscriviti)="aggiungiAlCarrello(carnet)"></app-card>
+          }
+        </div>
+      </section>
+
+      <!-- I tuoi carnet acquistati -->
+      <section class="carnet-acquistati">
+        <h2>I tuoi carnet acquistati</h2>
+        
+        @if (carnetAcquistati.length > 0) {
+          <div class="carnet-list">
+            @for (c of carnetAcquistati; track c.id) {
+              <div class="carnet-item">
+                <div class="carnet-info">
+                  <strong>Carnet #{{c.id}}</strong>
+                  <span class="carnet-date">Acquistato il {{formatDate(c.data_acquisto)}}</span>
+                </div>
+                <div class="carnet-lessons">{{c.num_lezioni}} lezioni rimaste</div>
+              </div>
+            }
+          </div>
+        }
+        
+        @if (carnetAcquistati.length === 0) {
+          <div class="no-results">
+            <h3>Nessun carnet acquistato</h3>
+            <p>Acquista un carnet per iniziare a prenotare le lezioni!</p>
+          </div>
+        }
+      </section>
+  </main>
+
+  <!-- CARRELLO (a destra) -->
+  <aside class="carrello-section">
+    <div class="carrello-card">
+      <h3>
+        <mat-icon>shopping_cart</mat-icon>
+        Carrello ({{carrello.length}})
+      </h3>
+      
+      @if (carrello.length === 0) {
+        <div class="carrello-vuoto">
+          <p>Il carrello è vuoto</p>
+        </div>
+      }
+      
+      @if (carrello.length > 0) {
+        <div class="carrello-items">
+          @for (c of carrello; track $index) {
+            <div class="carrello-item">
+              <div class="item-details">
+                <strong>{{c.tipo_lezioni}}</strong>
+                <span>{{c.num_lezioni}} lezioni - {{c.prezzo}} €</span>
+              </div>
+              <button class="btn-remove" (click)="rimuoviDalCarrello($index)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          }
+        </div>
+        
+        <div class="carrello-total">
+          <strong>Totale: {{getTotaleCarrello()}} €</strong>
+        </div>
+        
+        <button mat-raised-button color="primary" class="btn-acquista" (click)="acquistaCarrello()">
+          <mat-icon>payment</mat-icon>
+          Acquista
+        </button>
+      }
+    </div>
+  </aside>
+</div>

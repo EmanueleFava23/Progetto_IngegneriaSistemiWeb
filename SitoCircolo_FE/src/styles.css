@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Reset globale per box-sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Stili per la sidebar che si estende fino in fondo */
+.sidenav-container {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+.main-content {
+    background-color: white;
+}
+
+
+
+/* Header principale delle pagine */
+.page-header-standard {
+    margin-bottom: 32px;
+    padding: 24px 0;
+}
+
+.page-header-standard .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.page-header-standard .header-text {
+    flex: 1;
+}
+
+/* Titolo principale standardizzato */
+.page-title-standard {
+    margin: 0 0 8px 0;
+    font-size: 2.5rem;
+    color: #1976d2;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.2;
+}
+
+/* Sottotitolo standardizzato */
+.page-subtitle-standard {
+    margin: 0;
+    color: #666;
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+}
+

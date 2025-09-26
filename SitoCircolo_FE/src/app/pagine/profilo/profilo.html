@@ -1,0 +1,90 @@
+<!-- CONTENITORE PRINCIPALE CON PADDING -->
+<div class="profilo-container">
+  <!-- HEADER DELLA PAGINA -->
+  <header class="page-header-standard">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title-standard">Il mio profilo</h1>
+        <p class="page-subtitle-standard">Gestisci le tue informazioni personali</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENUTO PRINCIPALE -->
+  <div class="profile-content" *ngIf="!isLoading">
+  
+  <!-- CARD INFORMAZIONI PERSONALI -->
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person</mat-icon>
+        Informazioni personali
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="info-grid">
+        
+        <!-- Nome e Cognome -->
+        <div class="info-item">
+          <label>Nome completo</label>
+          <span class="info-value">{{ user?.nome }} {{ user?.cognome }}</span>
+        </div>
+        
+        <!-- Ruolo -->
+        <div class="info-item">
+          <label>Ruolo</label>
+          <span class="info-value">{{ ruolo }}</span>
+        </div>
+        
+        <!-- Username -->
+        <div class="info-item">
+          <label>Username</label>
+          <span class="info-value">{{ user?.username }}</span>
+        </div>
+        
+        <!-- Email -->
+        <div class="info-item">
+          <label>Email</label>
+          <span class="info-value">{{ user?.email }}</span>
+        </div>
+        
+        <!-- Data di nascita -->
+        <div class="info-item">
+          <label>Data di nascita</label>
+          <span class="info-value">
+            {{ formatDate(user?.data_nascita || '') }}
+          </span>
+        </div>
+        
+        <!-- Telefono -->
+        <div class="info-item" *ngIf="user?.telefono">
+          <label>Telefono</label>
+          <span class="info-value">{{ user?.telefono }}</span>
+        </div>
+        
+        <!-- Codice Fiscale -->
+        <div class="info-item" *ngIf="user?.cod_fiscale">
+          <label>Codice Fiscale</label>
+          <span class="info-value">{{ user?.cod_fiscale }}</span>
+        </div>
+        
+      </div>
+    </mat-card-content>
+    
+    <mat-divider></mat-divider>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="warn" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Disconnetti
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+
+  <!-- LOADING SPINNER -->
+  <div class="loading-container" *ngIf="isLoading">
+    <p>Caricamento profilo...</p>
+  </div>
+</div>

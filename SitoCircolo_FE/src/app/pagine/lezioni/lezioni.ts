@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LessonService } from '../../servizi/lesson.service';
 import { Lezione } from '../../modelli/lesson.model';
 import { CourseService } from '../../servizi/course.service';
@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { User, UserRole } from '../../modelli/user.model';
 import { UserService } from '../../servizi/userService';
 import { CarnetService } from '../../servizi/carnet.service';
-import { Subscription } from 'rxjs';
+
 
 
 
@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './lezioni.css',
   imports: [FormsModule, Card, MatIconModule, MatButtonModule]
 })
-export class Lezioni implements OnInit, OnDestroy {
+export class Lezioni implements OnInit {
 
   constructor(
     private lessonService: LessonService,
@@ -40,6 +40,7 @@ export class Lezioni implements OnInit, OnDestroy {
   lezioni: Lezione[] = [];
   lezioniFiltrate: Lezione[] = [];
   corsi: Corso[] = [];
+  utenti: User[] = [];
 
   data: string = '';
   ora_inizio: string = '';
@@ -50,84 +51,34 @@ export class Lezioni implements OnInit, OnDestroy {
   caricamento: boolean = true;  
   errore: string = '';
 
-  ruoloUtente: UserRole | null = null;
-  utente: User | null = null;
-  private subscription?: Subscription;
+  ruoloUtente!: UserRole;
+  utente!: User;
 
-  ngOnInit(): void {  
-        // Prova il caricamento immediato
-        this.caricaDati();
+  ngOnInit(): void {
+    this.ruoloUtente = this.sessione.getUserRole()!;
+    this.utente = this.sessione.getLoggedUser()!;
 
-    // Sottoscrizione per aggiornamenti futuri
-    this.subscription = this.sessione.user$.subscribe(user => {
-      if (user && !this.ruoloUtente) {
-          this.caricaDati();
-        }
-    });
-  }
-
-  private caricaDati(): void {
-    const currentUser = this.sessione.getLoggedUser();
-    const currentRole = this.sessione.getUserRole();
-
-    if (currentUser) {
-      this.ruoloUtente = currentRole;
-      this.utente = currentUser;
-      this.inizializzaPagina();
-    } else {
-      // Carica comunque la pagina anche senza utente
-      this.inizializzaPagina();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  private gestisciErrore(messaggio: string): void {
-    this.errore = messaggio;
-    this.caricamento = false;
-    this.changeDetector.detectChanges();
-  }
-
-  private inizializzaPagina(): void {
     this.recuperaCorsi();
+    this.caricaUtenti();
     this.caricaLezioni();
   }
 
-  aggiungiStatoIscrizione(lezioni: Lezione[], user: any): void {
-    if (!lezioni || !user) return;
-    lezioni.forEach(lezione => {
-      this.lessonService.controllaPrenotazione(lezione.id, user).subscribe({
-        next: (res) => {
-          // Aggiungi una proprietà dinamica 'isIscritto' alla lezione
-          lezione.isIscritto = res && res.length > 0;
-        },
-        error: () => {
-          lezione.isIscritto = false;
-        }
-      });
-    });
-  }
+
+
 
   caricaLezioni(): void {
     this.caricamento = true;
     this.errore = '';
     this.changeDetector.detectChanges();
 
-    const user = this.sessione.getLoggedUser();
-
     this.lessonService.getLezioni().subscribe({
       next: (lezioni) => {
         this.lezioni = lezioni;
-        
-        if (user) {
-          this.aggiungiStatoIscrizione(this.lezioni, user);
-        }
-        
+        // Prima imposta tutti come non iscritti
+        this.lezioni.forEach(l => l.isIscritto = false);
         this.applicaFiltri();
+        // Poi verifica le prenotazioni 
+        this.verificaPrenotazioni();
         this.caricamento = false;
         this.changeDetector.detectChanges();
         this.aggiornaStatoLezioniCompletate();
@@ -136,11 +87,42 @@ export class Lezioni implements OnInit, OnDestroy {
         this.gestisciErrore(`Errore nel caricamento delle lezioni: ${error}`);
       }
     });
-  };
+  }
+
+  caricaUtenti(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (utenti) => {
+        this.utenti = utenti;
+        this.changeDetector.detectChanges();
+      },
+      error: () => {
+        console.error("Errore nel caricamento degli utenti");
+      }
+    });
+  }
+
+  verificaPrenotazioni(): void {
+    if (!this.utente) return;
+
+    this.lezioni.forEach(lezione => {
+      this.lessonService.controllaPrenotazione(lezione.id, this.utente).subscribe({
+        next: (risultato) => {
+          lezione.isIscritto = risultato.isIscritto || risultato.prenotato || risultato.length > 0 || false;
+          this.changeDetector.detectChanges();
+        },
+        error: () => {
+          lezione.isIscritto = false;
+        }
+      });
+    });
+  }
+
+
 
   aggiornaStatoLezioniCompletate(): void {
     const oggi = new Date();
     this.lezioni.forEach(lezione => {
+
       // Confronta solo la data, non l'orario
       const dataLezione = new Date(lezione.data);
       if (dataLezione < oggi && lezione.stato !== 'completata') {
@@ -155,10 +137,19 @@ export class Lezioni implements OnInit, OnDestroy {
         });
       }
     });
-}
+  }
 
   recuperaCorsi(): void {
-    if (!this.ruoloUtente || this.ruoloUtente !== 'CORSISTA') {
+    if (this.ruoloUtente === 'CORSISTA') {
+      // Per corsisti, carica solo i corsi a cui sono iscritti
+      this.userService.getCorsiUtente(this.utente!.id).subscribe({
+        next: (corsi: Corso[]) => {
+          this.corsi = corsi;
+          this.changeDetector.detectChanges();
+        },
+        error: () => this.gestisciErrore("Errore nel caricamento dei corsi")
+      });
+    } else {
       // Per istruttori e segretari, carica tutti i corsi
       this.courseService.getCorsi().subscribe({
         next: (corsi) => {
@@ -167,20 +158,6 @@ export class Lezioni implements OnInit, OnDestroy {
         },
         error: () => this.gestisciErrore("Errore nel caricamento dei corsi")
       });
-    } else {
-      // Per corsisti, carica solo i corsi a cui sono iscritti
-      const user = this.sessione.getLoggedUser();
-      if (user) {
-        this.userService.getCorsiUtente(user.id).subscribe({
-          next: (corsi: Corso[]) => {
-            this.corsi = corsi;
-            this.changeDetector.detectChanges();
-          },
-          error: () => this.gestisciErrore("Errore nel caricamento dei corsi")
-        });
-      } else {
-        this.gestisciErrore("Nessun utente trovato per caricare i corsi");
-      }
     }
   }
 
@@ -191,9 +168,7 @@ export class Lezioni implements OnInit, OnDestroy {
       const matchOraFine = this.matchOraFine(lezione);
       const matchCorso = this.matchCorso(lezione);
       const matchStato = this.matchStato(lezione);
-      
-      // Filtro specifico per corsisti: mostra solo lezioni dei corsi a cui è iscritto
-      const matchCorsiUtente = !this.ruoloUtente || this.ruoloUtente !== 'CORSISTA' || this.corsi.some(corso => corso.id === lezione.corso_id);
+      const matchCorsiUtente = this.matchCorsiUtente(lezione);
       
       return matchData && matchOraInizio && matchOraFine && matchCorso && matchStato && matchCorsiUtente;
     });
@@ -223,6 +198,11 @@ export class Lezioni implements OnInit, OnDestroy {
     return this.stato === '' || lezione.stato === this.stato;
   }
 
+  private matchCorsiUtente(lezione: Lezione): boolean {
+    // mostra solo lezioni dei corsi a cui è iscritto un CORSISTA
+    return this.ruoloUtente !== 'CORSISTA' || this.corsi.some(corso => corso.id === lezione.corso_id);
+  }
+
   resetFiltri(): void{
     this.data = '';
     this.ora_inizio = '';
@@ -239,10 +219,7 @@ export class Lezioni implements OnInit, OnDestroy {
 
   dialogNuovaLezione(): void {
     // Apri il dialog per creare una nuova lezione
-    const dialogRef = this.dialog.open(LezioniDialog, {
-      width: '400px',
-      data: { }
-    });
+    const dialogRef = this.dialog.open(LezioniDialog);
 
     // Gestisci la chiusura del dialog
     dialogRef.afterClosed().subscribe(result => {
@@ -253,10 +230,7 @@ export class Lezioni implements OnInit, OnDestroy {
   }
 
   dialogModificaLezione(lezione: Lezione): void {
-    const dialogRef = this.dialog.open(LezioniDialog, {
-      width: '400px',
-      data: { ...lezione }
-    });
+    const dialogRef = this.dialog.open(LezioniDialog, { data: { ...lezione } });
 
     // Gestisci la chiusura del dialog
     dialogRef.afterClosed().subscribe(result => {
@@ -276,14 +250,12 @@ export class Lezioni implements OnInit, OnDestroy {
         this.caricaLezioni();
         this.messaggio.open('Lezione eliminata con successo!', 'Chiudi', { 
           duration: 3000,
-          horizontalPosition: 'center',
           verticalPosition: 'top'
         });
       },
       error: (error) => {
         this.messaggio.open(`Errore nell'eliminazione della lezione: ${error}`, 'Chiudi', { 
           duration: 5000,
-          horizontalPosition: 'center',
           verticalPosition: 'top'
         });
       }
@@ -295,72 +267,108 @@ export class Lezioni implements OnInit, OnDestroy {
       return;
     }
 
-    const user = this.sessione.getLoggedUser();
-    if (!user) {
-      this.messaggio.open('Nessun utente loggato', 'Chiudi', { duration: 3000 });
-      return;
-    }
-
     switch (this.ruoloUtente) {
       case 'CORSISTA':
-        this.iscriviCorsista(id, user);
+        this.iscriviCorsista(id, this.utente!);
         break;
       case 'ISTRUTTORE':
-        this.assegnaIstruttore(id, user);
+        this.assegnaIstruttore(id, this.utente!);
         break;
       case 'SEGRETARIO':
-        this.approvaLezione(id, user);
+        this.approvaLezione(id, this.utente!);
         break;
     }
   }
 
-  private iscriviCorsista(id: number, user: any): void {
+  iscriviCorsista(id: number, user: any): void {
     this.carnetService.getCarnetAcquistati(user.id).subscribe({
       next: (carnetAcquistati) => {
+        // Filtra i carnet con lezioni disponibili
         const carnetDisponibili = carnetAcquistati.filter(c => c.num_lezioni > 0);
-
+        
         if (carnetDisponibili.length === 0) {
-          this.messaggio.open('Non hai carnet disponibili con lezioni! Acquistane uno nella sezione Carnet.', 'Chiudi', { duration: 5000 });
+          this.messaggio.open('Non hai carnet disponibili con lezioni! Acquistane uno nella sezione Carnet.', 'Chiudi', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
           return;
         }
-
+        // Usa il primo carnet disponibile
         const carnetDaUsare = carnetDisponibili[0];
         this.lessonService.prenotaLezione(id, user).subscribe({
           next: () => {
             this.carnetService.consumaLezione(carnetDaUsare.id, carnetDaUsare.num_lezioni).subscribe({
               next: () => {
                 this.caricaLezioni();
-                this.messaggio.open('Iscrizione avvenuta con successo! Una lezione è stata scalata dal tuo carnet.', 'Chiudi', { duration: 3000 });
+                this.messaggio.open('Iscrizione avvenuta con successo! Una lezione è stata scalata dal tuo carnet.', 'Chiudi', {
+                  duration: 3000,
+                  verticalPosition: 'top'
+                });
               },
               error: (error) => {
-                this.messaggio.open(`Iscrizione avvenuta ma errore nell'aggiornamento del carnet: ${error}`, 'Chiudi', { duration: 5000 });
+                this.messaggio.open(`Iscrizione avvenuta ma errore nell'aggiornamento del carnet: ${error}`, 'Chiudi', {
+                  duration: 5000,
+                  verticalPosition: 'top'
+                });
               }
             });
           },
-          error: (error) => this.messaggio.open(`Errore nell'iscrizione: ${error}`, 'Chiudi', { duration: 5000 })
+          error: (error) => {
+            this.messaggio.open(`Errore nell'iscrizione: ${error}`, 'Chiudi', {
+              duration: 5000,
+              verticalPosition: 'top'
+            });
+          }
         });
       },
-      error: () => this.messaggio.open('Errore nel controllo dei carnet disponibili.', 'Chiudi', { duration: 5000 })
+      error: () => {
+        this.messaggio.open('Errore nel controllo dei carnet disponibili.', 'Chiudi', {
+          duration: 5000,
+          verticalPosition: 'top'
+        });
+      }
     });
   }
 
   private assegnaIstruttore(id: number, user: any): void {
     this.lessonService.modificaLezione(id, { istruttore_id: user.id }).subscribe({
       next: () => {
-        this.messaggio.open('Assegnazione avvenuta con successo!', 'Chiudi', { duration: 3000 });
+        this.messaggio.open('Assegnazione avvenuta con successo!', 'Chiudi', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
         this.caricaLezioni();
       },
-      error: (error) => this.messaggio.open(`Errore nell'assegnazione: ${error}`, 'Chiudi', { duration: 5000 })
+      error: (error) => {
+        this.messaggio.open(`Errore nell'assegnazione: ${error}`, 'Chiudi', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+      }
     });
   }
 
   private approvaLezione(id: number, user: any): void {
     this.lessonService.modificaLezione(id, { stato: 'approvata', approvata_da: user.id }).subscribe({
       next: () => {
-        this.messaggio.open('Approvazione avvenuta con successo!', 'Chiudi', { duration: 3000 });
+        this.messaggio.open('Approvazione avvenuta con successo!', 'Chiudi', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
         this.caricaLezioni();
       },
-      error: (error) => this.messaggio.open(`Errore nell'approvazione: ${error}`, 'Chiudi', { duration: 5000 })
+      error: (error) => {
+        this.messaggio.open(`Errore nell'approvazione: ${error}`, 'Chiudi', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
+      }
     });
+  }
+
+  private gestisciErrore(messaggio: string): void {
+  this.errore = messaggio;
+  this.caricamento = false;
+  this.changeDetector.detectChanges();
   }
 }

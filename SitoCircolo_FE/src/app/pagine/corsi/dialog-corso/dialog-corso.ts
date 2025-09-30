@@ -50,12 +50,14 @@ export class DialogCorso implements OnInit{
       const user = this.sessione.getLoggedUser();
       const DatiCorso = {...this.form.value, creato_da: user?.id};
       this.corsoService.creaCorso(DatiCorso).subscribe({
-        next: (res) => {
-          this.messaggio.open('Corso creato con successo!', 'Chiudi', { duration: 3000 });
+        next: () => {
+          this.messaggio.open('Corso creato con successo!', 'Chiudi', { duration: 3000,
+            verticalPosition: 'top'
+          });
           this.dialogoRef.close(true);
         },
-        error: (err) => {
-          this.messaggio.open('Errore nella creazione del corso. Riprova.', 'Chiudi', { duration: 3000 });
+        error: () => {
+          this.messaggio.open('Errore nella creazione del corso. Riprova.', 'Chiudi', { duration: 3000 ,verticalPosition: 'top'});
         }
       });
     }
@@ -66,12 +68,12 @@ export class DialogCorso implements OnInit{
     if(this.form.valid && this.dati){
       const DatiCorso = {...this.form.value};
       this.corsoService.modificaCorso(this.dati.id, DatiCorso).subscribe({
-        next: (res) => {
-          this.messaggio.open('Corso modificato con successo!', 'Chiudi', { duration: 3000 });
+        next: () => {
+          this.messaggio.open('Corso modificato con successo!', 'Chiudi', { duration: 3000 ,verticalPosition: 'top'});
           this.dialogoRef.close(true);
         },
-        error: (err) => {
-          this.messaggio.open('Errore nella modifica del corso. Riprova.', 'Chiudi', { duration: 3000 });
+        error: () => {
+          this.messaggio.open('Errore nella modifica del corso. Riprova.', 'Chiudi', { duration: 3000 ,verticalPosition: 'top'});
         }
       });
     }

@@ -1,240 +1,202 @@
 /* SFONDO DELLA PAGINA */
 .login-background {
-  min-height: 100vh; /* Altezza minima dello schermo */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradiente blu-viola */
-  display: flex; /* Flexbox per centrare */
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra orizzontalmente */
-  padding: 20px; /* Padding per mobile */
-  position: relative; /* Per elementi assoluti */
+  min-height: 100vh;
+  background-image:url('../../../assets/images/yacht.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
 }
 
-/* Effetto di ondine per il background */
-.login-background::before {
-  content: ''; /* Contenuto vuoto necessario */
-  position: absolute; /* Posizione assoluta */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
-  pointer-events: none; /* Non intercetta i click */
-}
+
 
 /* CONTAINER PRINCIPALE */
 .login-container {
-  background: rgba(255, 255, 255, 0.95); /* Sfondo bianco semi-trasparente */
-  backdrop-filter: blur(10px); /* Effetto sfocatura dello sfondo */
-  border-radius: 20px; /* Angoli molto arrotondati */
-  padding: 40px; /* Padding generoso */
+  background: rgba(255, 255, 255, 0.95); 
+  backdrop-filter: blur(10px); 
+  border-radius: 20px; 
+  padding: 40px; 
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.2); /* Ombra e bordo sottile */
-  max-width: 420px; /* Larghezza massima */
-  width: 100%; /* Larghezza completa fino al max */
-  position: relative; /* Per z-index */
-  z-index: 1; /* Sopra il background */
+    0 0 0 1px rgba(255, 255, 255, 0.2); 
+  max-width: 420px; 
+  width: 100%; 
+  position: relative; 
+  z-index: 1;
 }
 
-/* HEADER DEL LOGIN */
 header {
-  text-align: center; /* Testo centrato */
-  margin-bottom: 32px; /* Spazio sotto */
+  text-align: center; 
+  margin-bottom: 32px; 
 }
 
 .logo-container {
-  margin-bottom: 20px; /* Spazio sotto il logo */
+  margin-bottom: 20px;
 }
 
 .logo-icon {
-  font-size: 48px; /* Icona grande */
-  margin-bottom: 12px; /* Spazio sotto l'icona */
-  display: block; /* Blocco per andare a capo */
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .login-header h1 {
-  color: #1976d2; /* Colore blu */
-  font-size: 24px; /* Dimensione titolo */
-  font-weight: 700; /* Grassetto */
-  margin: 0 0 8px 0; /* Margini */
-  letter-spacing: -0.5px; /* Spaziatura lettere */
+  color: #1976d2;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
 }
 
 .login-header h2 {
-  color: #333; /* Colore scuro */
-  font-size: 28px; /* Dimensione grande */
-  font-weight: 600; /* Semi-grassetto */
-  margin: 0 0 8px 0; /* Margini */
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
 }
 
 .login-header p {
-  color: #666; /* Colore grigio */
-  font-size: 16px; /* Dimensione normale */
-  margin: 0; /* Nessun margine */
+  color: #666;
+  font-size: 16px;
+  margin: 0;
 }
 
 /* FORM DI LOGIN */
 .login-form {
-  margin-bottom: 24px; /* Spazio sotto il form */
+  margin-bottom: 24px;
 }
 
-/* GRUPPO DI CAMPI */
 .form-group {
-  margin-bottom: 24px; /* Spazio tra i campi */
+  margin-bottom: 24px;
 }
 
-/* CONTAINER DEGLI INPUT */
 .input-container {
-  position: relative; /* Per posizionare l'icona */
-  display: flex; /* Flexbox per icona + input */
-  align-items: center; /* Allinea al centro */
-  background: #f8f9fa; /* Sfondo grigio chiaro */
-  border: 2px solid #e9ecef; /* Bordo grigio */
-  border-radius: 12px; /* Angoli arrotondati */
-  transition: all 0.3s ease; /* Transizione fluida */
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 .input-container:focus-within {
-  border-color: #1976d2; /* Bordo blu quando attivo */
-  background: #fff; /* Sfondo bianco quando attivo */
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1); /* Ombra blu */
+  border-color: #1976d2;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
-/* ICONE DEGLI INPUT */
 .input-icon {
-  padding: 16px; /* Padding dell'icona */
-  font-size: 20px; /* Dimensione icona */
-  color: #666; /* Colore grigio */
-  border-right: 1px solid #e9ecef; /* Bordo a destra */
-  background: rgba(0, 0, 0, 0.02); /* Sfondo leggermente scuro */
+  padding: 16px;
+  font-size: 20px;
+  color: #666;
+  border-right: 1px solid #e9ecef;
+  background: rgba(0, 0, 0, 0.02);
 }
 
-/* INPUT FIELDS */
 .form-input {
-  flex: 1; /* Prende tutto lo spazio rimanente */
-  padding: 16px 20px; /* Padding generoso */
-  border: none; /* Nessun bordo */
-  background: transparent; /* Sfondo trasparente */
-  font-size: 16px; /* Dimensione del testo */
-  color: #333; /* Colore del testo */
-  outline: none; /* Nessun outline */
+  flex: 1;
+  padding: 16px 20px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #333;
+  outline: none;
 }
 
 .form-input::placeholder {
-  color: #999; /* Colore del placeholder */
+  color: #999;
 }
 
-/* TESTO DI ERRORE */
 .error-text {
-  display: flex; /* Flexbox per icona + testo */
-  align-items: center; /* Allinea al centro */
-  gap: 8px; /* Spazio tra icona e testo */
-  color: #dc3545; /* Colore rosso */
-  font-size: 14px; /* Dimensione piccola */
-  margin-top: 8px; /* Margine superiore */
-  padding-left: 4px; /* Padding a sinistra */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+  padding-left: 4px;
 }
 
 .error-icon {
-  font-size: 16px; /* Dimensione icona errore */
+  font-size: 16px;
 }
 
 /* BOTTONE DI LOGIN */
 .login-btn {
-  width: 100%; /* Larghezza completa */
-  padding: 16px; /* Padding generoso */
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%); /* Gradiente blu */
-  color: white; /* Testo bianco */
-  border: none; /* Nessun bordo */
-  border-radius: 12px; /* Angoli arrotondati */
-  font-size: 16px; /* Dimensione del testo */
-  font-weight: 600; /* Semi-grassetto */
-  cursor: pointer; /* Cursore pointer */
-  transition: all 0.3s ease; /* Transizione fluida */
-  position: relative; /* Per effetti */
-  overflow: hidden; /* Nasconde contenuto che fuoriesce */
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .login-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%); /* Gradiente più scuro */
-  transform: translateY(-2px); /* Leggero sollevamento */
-  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3); /* Ombra blu */
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
 }
 
 .login-btn:active:not(:disabled) {
-  transform: translateY(0); /* Ritorna alla posizione originale */
+  transform: translateY(0);
 }
 
 .login-btn:disabled {
-  background: #6c757d; /* Grigio quando disabilitato */
-  cursor: not-allowed; /* Cursore non permesso */
-  transform: none; /* Nessuna trasformazione */
-  box-shadow: none; /* Nessuna ombra */
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* ANIMAZIONE DI CARICAMENTO */
-.loading {
-  display: inline-flex; /* Flex per centrare */
-  align-items: center; /* Allinea al centro */
-  gap: 8px; /* Spazio tra testo e animazione */
-}
+/* MESSAGGIO DI ERRORE GENERALE */
 
-.loading::after {
-  content: ''; /* Contenuto vuoto */
-  width: 16px; /* Larghezza spinner */
-  height: 16px; /* Altezza spinner */
-  border: 2px solid transparent; /* Bordo trasparente */
-  border-top: 2px solid white; /* Bordo superiore bianco */
-  border-radius: 50%; /* Cerchio */
-  animation: spin 1s linear infinite; /* Animazione rotazione */
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg); /* Rotazione completa */
-  }
-}
-
-/* MESSAGGIO DI ERRORE */
 .error-message {
-  display: flex; /* Flexbox per icona + testo */
-  align-items: center; /* Allinea al centro */
-  gap: 8px; /* Spazio tra icona e testo */
-  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%); /* Gradiente rosso chiaro */
-  color: #c53030; /* Rosso scuro */
-  padding: 12px 16px; /* Padding */
-  border-radius: 8px; /* Angoli arrotondati */
-  margin-top: 16px; /* Margine superiore */
-  border-left: 4px solid #e53e3e; /* Bordo rosso a sinistra */
-  font-size: 14px; /* Dimensione del testo */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  color: #c53030;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  border-left: 4px solid #e53e3e;
+  font-size: 14px;
 }
 
-/* FOOTER DEL LOGIN */
 .login-footer {
-  text-align: center; /* Testo centrato */
-  padding-top: 20px; /* Padding superiore */
-  border-top: 1px solid #e9ecef; /* Bordo superiore */
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
 }
 
 .login-footer p {
-  color: #666; /* Colore grigio */
-  font-size: 14px; /* Dimensione piccola */
-  margin: 8px 0; /* Margini verticali */
+  color: #666;
+  font-size: 14px;
+  margin: 8px 0;
 }
 
-/* LINK */
 .register-link, .forgot-link {
-  color: #1976d2; /* Colore blu */
-  text-decoration: none; /* Nessuna sottolineatura */
-  font-weight: 500; /* Semi-grassetto */
-  transition: color 0.3s ease; /* Transizione del colore */
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  cursor: pointer;
 }
 
 .register-link:hover, .forgot-link:hover {
-  color: #1565c0; /* Colore più scuro al hover */
-  text-decoration: underline; /* Sottolineatura al hover */
+  color: #1565c0;
+  text-decoration: underline;
 }
 

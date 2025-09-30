@@ -10,7 +10,6 @@
     padding: 20px 24px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    min-width: 280px;
     min-height: 72px;
     box-sizing: border-box;
 }
@@ -58,13 +57,15 @@
     color: white;
     opacity: 0.95;
     white-space: nowrap;
-    overflow: visible;
+    overflow: hidden;
+    text-overflow: ellipsis;
     flex: 1;
 }
 
 /* Stili per i link di navigazione */
 mat-nav-list {
     padding: 0;
+    overflow: hidden;
 }
 
 mat-nav-list a[mat-list-item]:not(.profilo) {

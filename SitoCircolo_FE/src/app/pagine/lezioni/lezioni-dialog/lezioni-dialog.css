@@ -1,54 +1,54 @@
-/* HEADER - Il titolo del modale */
+/* HEADER */
 header {
-    text-align: center; /* Centra il titolo */
-    margin-bottom: 20px; /* Spazio sotto il titolo */
+    text-align: center; 
+    margin-bottom: 20px; 
     margin-top: 20px;
 }
 
 header h2 {
-    color: #1976d2; /* Colore blu per il titolo */
-    margin: 0; /* Rimuove il margine di default */
+    color: #1976d2; 
+    margin: 0; 
 }
 
-/* FORM - Il contenitore principale del form */
+/* FORM  */
 form {
-    padding: 24px; /* Spazio interno del form (molto meno di prima!) */
-    background: white; /* Sfondo bianco */
-    border-radius: 8px; /* Angoli arrotondati */
-    max-width: 500px; /* Larghezza massima (invece di width fisso) */
-    width: 100%; /* Usa tutto lo spazio disponibile fino al max-width */
+    padding: 24px; 
+    background: white; 
+    border-radius: 8px; 
+    max-width: 500px; 
+    width: 100%; 
 }
 
-/* CONTAINER - Contiene tutti i campi del form */
+/* CONTAINER */
 .container {
-    display: flex; /* Abilita Flexbox */
-    flex-direction: column; /* Dispone gli elementi in colonna (uno sotto l'altro) */
-    gap: 20px; /* Spazio uniforme tra tutti gli elementi figli */
-    margin-bottom: 20px; /* Spazio sotto il contenitore, prima dei bottoni */
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    margin-bottom: 20px; 
 }
 
-/* FORM-ROW - Ogni riga del form (label + input) */
+/* FORM-ROW */
 .form-row {
-    display: flex; /* Abilita Flexbox per la riga */
-    align-items: center; /* Allinea label e input al centro verticalmente */
-    gap: 12px; /* Spazio tra label e input */
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
 }
 
-/* LABEL - Le etichette dei campi */
+/* LABEL */
 label {
-    font-weight: 500; /* Testo semi-grassetto */
-    color: #1976d2; /* Colore blu */
-    min-width: 140px; /* Larghezza minima fissa per allineare tutti gli input */
-    text-align: left; /* Allinea il testo a sinistra */
+    font-weight: 500; 
+    color: #1976d2; 
+    min-width: 140px; 
+    text-align: left; 
 }
 
-/* INPUT - I campi di input */
+/* INPUT */
 input {
-    flex: 1; /* Prende tutto lo spazio rimanente nella riga */
-    padding: 8px 12px; /* Spazio interno per il testo */
-    border: 1px solid #ddd; /* Bordo grigio chiaro */
-    border-radius: 4px; /* Angoli leggermente arrotondati */
-    font-size: 14px; /* Dimensione del testo */
+    flex: 1; 
+    padding: 8px 12px; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    font-size: 14px; 
 }
 
 select {
@@ -60,7 +60,7 @@ select {
     background: white;
 }
 
-/* TEXTAREA - Campo note */
+/* TEXTAREA (le note) */
 textarea {
     flex: 1;
     padding: 8px 12px;
@@ -68,8 +68,8 @@ textarea {
     border-radius: 4px;
     font-size: 14px;
     font-family: inherit;
-    resize: vertical; /* Permette il resize solo verticale */
-    min-height: 60px; /* Altezza minima */
+    resize: vertical; 
+    min-height: 60px; 
 }
 
 textarea:focus {
@@ -78,14 +78,14 @@ textarea:focus {
 }
 
 input:focus {
-    border-color: #1976d2; /* Bordo blu quando è selezionato */
-    outline: none; /* Rimuove il bordo di default del browser */
+    border-color: #1976d2;
+    outline: none; 
 }
 
-/* BUTTONS - I bottoni del form */
+/* PULSANTI */
 button {
-    margin-right: 12px; /* Spazio tra i bottoni */
-    padding: 8px 16px; /* Spazio interno dei bottoni */
-    border-radius: 4px; /* Angoli arrotondati */
-    font-size: 14px; /* Dimensione del testo */
+    margin-right: 12px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
 }

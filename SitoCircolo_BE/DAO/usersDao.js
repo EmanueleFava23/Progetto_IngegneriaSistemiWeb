@@ -67,8 +67,7 @@ const aggiungiUtente = async (connection, dati) =>{
         // Ottieni l'ID generato automaticamente
         const insertedId = results1.insertId;
 
-        // Inserisci nella tabella specifica se c'è un tipo
-        console.log(ruolo);
+        // Inserisci nella tabella specifica in base al ruolo
         switch (ruolo.toLowerCase()) {
             case 'corsista':
                 sql = 'INSERT INTO CORSISTA (id) VALUES (?)';

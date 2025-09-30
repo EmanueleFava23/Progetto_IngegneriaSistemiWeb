@@ -24,16 +24,11 @@ export class Auth {
       next: (response: User | null) => {
         
         // Gestisci il caso in cui il UserService restituisce ancora un array
-        let user: User | null;
-        if (Array.isArray(response)) {
-          user = response.length > 0 ? response[0] : null;
-        } else {
-          user = response;
-        } 
+        let user: User | null  = response;
+
         if (user) {
           if (user.password === password){
             this.sessione.setLoggedUser(user);
-            // Attendi che i dati dell'utente siano completamente caricati
             this.sessione.LoadUserRole().then(() => {
               this.router.navigate(['/home']);
             });
@@ -68,29 +63,12 @@ export class Auth {
         }, 500);
       },
       error: (err) => {
-        console.error('Errore nella registrazione:', err);
         
         // Gestisci errori specifici
         if (err.error && err.error.message) {
-          if (err.error.message.includes('Duplicate entry')) {
-            this.errore = 'Username già esistente, scegline un altro';
-          } else if (err.error.message.includes('data_nascita')) {
-            this.errore = 'Data di nascita obbligatoria';
-          } else {
             this.errore = 'Errore nella registrazione: ' + err.error.message;
-          }
-        } else if (err.message) {
-          if (err.message.includes('Duplicate entry')) {
-            this.errore = 'Username già esistente, scegline un altro';
-          } else if (err.message.includes('data_nascita')) {
-            this.errore = 'Data di nascita obbligatoria';
-          } else {
-            this.errore = 'Errore nella registrazione: ' + err.message;
-          }
-        } else {
-          this.errore = 'Errore nella registrazione. Riprova più tardi.';
-        }
       }
+    }
     });
   };
 }

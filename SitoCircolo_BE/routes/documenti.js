@@ -12,7 +12,6 @@ router.get("", async (req, res) => {
 
     try {
         connection = await db.getConnection();
-        console.log(filtri);
 
         const [results] = await documentsDao.mostraDocumenti(connection, filtri);
 
@@ -31,7 +30,6 @@ router.get("", async (req, res) => {
 
 router.post("", async (req, res) => {
     const valori = req.body;
-    console.log(valori);
     let connection;
 
     try{

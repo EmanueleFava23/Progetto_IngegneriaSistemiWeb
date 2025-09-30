@@ -1,5 +1,5 @@
 
-<!--CARD PER I CORSI-->
+<!--CORSI-->
 @if (tipo === "corso") {
     <mat-card>
         <div class="card-header-enhanced">
@@ -95,7 +95,7 @@
     </mat-card>
 }
 
-<!--CARD PER I CARNET-->
+<!--CARNET-->
 @if(tipo === "carnet"){
     <mat-card>
         <div class="card-header-enhanced">
@@ -142,7 +142,7 @@
     </mat-card>
 }
 
-<!--CARD PER I DOCUMENTI-->
+<!-- DOCUMENTI-->
 @if(tipo === "documento"){
     <mat-card>
         <div class="card-header-enhanced">
@@ -215,6 +215,8 @@
     </mat-card>
 }
 
+
+<!-- LEZIONE -->
 @if(tipo === "lezione"){
     <mat-card>
         <div class="card-header-enhanced">
@@ -346,7 +348,7 @@
                     <mat-icon>edit</mat-icon>
                     Modifica
                 </button>
-                @if(dati.stato !== 'approvata'){
+                @if(dati.stato !== 'approvata' && dati.stato !== 'completata'){
                     <button (click)="Iscriviti.emit(dati)">
                         <mat-icon>check_circle</mat-icon>
                         Approva

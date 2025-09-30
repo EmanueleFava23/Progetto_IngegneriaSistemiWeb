@@ -61,7 +61,8 @@ export class LezioniDialog implements OnInit {
       },
       error: (error) =>{
         this.messaggio.open(`Errore nel caricamento dei corsi: ${error}`, 'Chiudi', {
-          duration: 5000
+          duration: 3000,
+          verticalPosition: 'top'
         });
       }
     });
@@ -73,7 +74,7 @@ export class LezioniDialog implements OnInit {
       console.log(user);
       const DatiLezione = {...this.form.value, proposta_da: user?.id};
       this.lessonService.creaLezione(DatiLezione).subscribe({
-        next: (res) => {
+        next: () => {
           this.messaggio.open('Lezione creata con successo!', 'Chiudi', {
             duration: 3000,
             horizontalPosition: 'center',
@@ -83,8 +84,7 @@ export class LezioniDialog implements OnInit {
         },
         error: (error) =>{
           this.messaggio.open(`Errore nella creazione della lezione: ${error}`, 'Chiudi', {
-            duration: 5000,
-            horizontalPosition: 'center',
+            duration: 3000,
             verticalPosition: 'top'
           });
         }
@@ -95,18 +95,16 @@ export class LezioniDialog implements OnInit {
     if(this.form.valid && this.dati){
       const DatiLezione = {...this.form.value, approvata_da: null, stato: "proposta"};
       this.lessonService.modificaLezione(this.dati.id, DatiLezione).subscribe({
-        next: (res) => {
+        next: () => {
           this.messaggio.open('Lezione modificata con successo!', 'Chiudi', {
             duration: 3000,
-            horizontalPosition: 'center',
             verticalPosition: 'top'
           });
           this.dialogRef.close(true);
         },
         error: (error) =>{
           this.messaggio.open(`Errore nella modifica della lezione: ${error}`, 'Chiudi', {
-            duration: 5000,
-            horizontalPosition: 'center',
+            duration: 3000,
             verticalPosition: 'top'
           });
         }

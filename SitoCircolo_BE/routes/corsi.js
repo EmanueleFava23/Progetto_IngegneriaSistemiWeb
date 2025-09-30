@@ -150,12 +150,10 @@ router.get("/:id/iscritti", async (req, res) => {
 router.post("/:id/iscritti", async (req, res) => {
     const corsoId = req.params.id;
     const corsista_id = req.body.corsista_id;
-    console.log(req.headers);
     let connection;
 
     try{
         connection = await db.getConnection();
-        console.log(corsoId, corsista_id);
         const [results] = await coursesDao.iscriviUtenteAlCorso(connection, corsoId, corsista_id);
 
         res.status(200);

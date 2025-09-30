@@ -7,6 +7,7 @@ import { Sessione } from '../../servizi/sessione';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { User, UserRole } from '../../modelli/user.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-carnet',
@@ -15,6 +16,7 @@ import { User, UserRole } from '../../modelli/user.model';
   styleUrl: './carnet.css'
 })
 export class CarnetPage implements OnInit {
+
   
   //Template per i carnet acquistabili
   carnetDisponibili: CarnetTemplate[] = [
@@ -43,7 +45,6 @@ export class CarnetPage implements OnInit {
 
   carrello: CarnetTemplate[] = [];
   carnetAcquistati: Carnet[] = [];
-  mostraCarrello: boolean = false;
 
   // Controllo accesso
   ruoloUtente: UserRole | null = null;
@@ -51,8 +52,11 @@ export class CarnetPage implements OnInit {
 
   constructor(
     private carnetService: CarnetService,
-    private sessione: Sessione
+    private sessione: Sessione,
+    private messaggio: MatSnackBar
   ) {}
+
+
 
   ngOnInit(): void {
     this.ruoloUtente = this.sessione.getUserRole();
@@ -60,6 +64,23 @@ export class CarnetPage implements OnInit {
 
     // Carica i carnet acquistati
     this.aggiornaCarnetAcquistati();
+  }
+
+  aggiornaCarnetAcquistati() {
+    if (!this.utente) {
+      this.carnetAcquistati = [];
+      return;
+    }
+
+    this.carnetService.getCarnetAcquistati(this.utente.id).subscribe({
+      next: (listaCarnet) => {
+        this.carnetAcquistati = listaCarnet;
+      },
+      error: (error) => {
+        console.error('Errore nel recupero dei carnet:', error);
+        this.carnetAcquistati = [];
+      }
+    });
   }
 
   // Metodo per ricaricare i carnet
@@ -86,6 +107,9 @@ export class CarnetPage implements OnInit {
   }
 
   acquistaCarrello() {
+    if (!confirm('Sei sicuro di voler completare l\'acquisto per un totale di €' + this.getTotaleCarrello() + '?')) {
+      return;
+    }
     if (!this.utente) {
       alert('Devi essere loggato per acquistare!');
       return;
@@ -98,26 +122,35 @@ export class CarnetPage implements OnInit {
     
     let acquisti = 0;
     let errori = 0;
+
+    //per controllare quando ho finito tutti gli acquisti
     const totaleAcquisti = this.carrello.length;
 
     //creo un carnet per ogni elemento del carrello
     this.carrello.forEach(c => {
+      //creo entità carnet da inviare
       const nuovoCarnet = {
         proprietario_id: this.utente!.id,
-        data_acquisto: new Date().toISOString().split('T')[0],
+        data_acquisto: new Date().toISOString().split('T')[0], //formato YYYY-MM-DD
         num_lezioni: c.num_lezioni
       };
-      
+
       this.carnetService.acquistaCarnet(nuovoCarnet).subscribe({
-        next: (result) => {
+        next: () => {
           acquisti++;
           if (acquisti + errori === totaleAcquisti) {
             this.carrello = [];
             this.aggiornaCarnetAcquistati();
             if (errori === 0) {
-              alert('Acquisto completato con successo!');
+              this.messaggio.open('Acquisto completato con successo!', 'Chiudi', { 
+                duration: 3000,
+                verticalPosition: 'top'
+              });
             } else {
-              alert(`Acquisto parzialmente completato. ${errori} carnet non sono stati acquistati.`);
+              this.messaggio.open(`Acquisto parzialmente completato. ${errori} carnet non sono stati acquistati.`, 'Chiudi', { 
+                duration: 3000,
+                verticalPosition: 'top'
+              });
             }
           }
         },
@@ -128,9 +161,15 @@ export class CarnetPage implements OnInit {
             if (acquisti > 0) {
               this.carrello = [];
               this.aggiornaCarnetAcquistati();
-              alert(`Acquisto parzialmente completato. ${errori} carnet non sono stati acquistati.`);
+              this.messaggio.open(`Acquisto parzialmente completato. ${errori} carnet non sono stati acquistati.`, 'Chiudi', { 
+                duration: 3000,
+                verticalPosition: 'top'
+              });
             } else {
-              alert('Errore durante l\'acquisto!');
+              this.messaggio.open('Errore durante l\'acquisto!', 'Chiudi', { 
+                duration: 3000,
+                verticalPosition: 'top'
+              });
             }
           }
         }
@@ -138,22 +177,6 @@ export class CarnetPage implements OnInit {
     });
   }
 
-  aggiornaCarnetAcquistati() {
-    if (!this.utente) {
-      this.carnetAcquistati = [];
-      return;
-    }
-
-    this.carnetService.getCarnetAcquistati(this.utente.id).subscribe({
-      next: (listaCarnet) => {
-        this.carnetAcquistati = listaCarnet;
-      },
-      error: (error) => {
-        console.error('Errore nel recupero dei carnet:', error);
-        this.carnetAcquistati = [];
-      }
-    });
-  }
 
   consumaLezioneSuCarnet(carnetId: number) {
     this.carnetService.consumaLezione(carnetId).subscribe({

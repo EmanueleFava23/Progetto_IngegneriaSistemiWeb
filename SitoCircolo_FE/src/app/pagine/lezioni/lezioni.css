@@ -79,6 +79,27 @@
 	box-sizing: border-box;
 }
 
+.data-group input[type="date"] {
+	width: 100%;
+	padding: 8px 10px;
+	border-radius: 6px;
+	border: 1px solid #b3c6e0;
+	background: #f7fbff;
+	font-size: 15px;
+	margin-bottom: 8px;
+	box-sizing: border-box;
+}
+
+.data-group input[type="date"]:focus {
+	outline: none;
+	border-color: #0d47a1;
+	background: #f8fbff;
+}
+
+.data-group input[type="date"]:hover {
+	border-color: #1565c0;
+}
+
 .filtri-actions {
 	display: flex;
 	align-items: center;

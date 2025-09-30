@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Carnet, CarnetTemplate } from '../modelli/carnet.model';
+import { Carnet } from '../modelli/carnet.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,48 +26,49 @@ export class CarnetService {
     return this.http.get<Carnet[]>(this.apiUrl, { params });
   }
 
-  // GET carnet per utente specifico
+  // carnet acquistati da un utente
   getCarnetAcquistati(userId: number): Observable<Carnet[]> {
     return this.getCarnet({ proprietario_id: userId });
   }
 
-  // GET singolo carnet per ID
+  // singolo carnet per ID
   getCarnetById(id: number): Observable<Carnet> {
     return this.http.get<Carnet>(`${this.apiUrl}/${id}`);
   }
 
-  // POST nuovo carnet (acquisto) - solo i campi del database
+  // nuovo carnet (acquisto), con solo campi corretti
   acquistaCarnet(carnetData: { proprietario_id: number, num_lezioni: number, data_acquisto: string }): Observable<Carnet> {
     return this.http.post<Carnet>(this.apiUrl, carnetData);
   }
 
-  // PATCH modifica carnet (per consumare lezioni)
+  // modifica carnet (per consumare lezioni)
   aggiornaCarnet(id: number, dati: Partial<Carnet>): Observable<Carnet> {
     return this.http.patch<Carnet>(`${this.apiUrl}/${id}`, dati);
   }
 
-  // DELETE elimina carnet
+  // elimina carnet
   eliminaCarnet(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  // Metodo helper per consumare una lezione da un carnet
+  // per consumare una lezione da un carnet
   consumaLezione(id: number, lezioniAttuali?: number): Observable<Carnet> {
     if (lezioniAttuali !== undefined && lezioniAttuali > 0) {
       // Se conosciamo già il numero di lezioni, aggiorniamo direttamente
       const nuoveLezioni = lezioniAttuali - 1;
       return this.aggiornaCarnet(id, { num_lezioni: nuoveLezioni });
     }
-    
     // Altrimenti, recuperiamo prima il carnet
     return new Observable(observer => {
       this.getCarnetById(id).subscribe({
         next: (carnet) => {
+          //se il carnet ha lezioni
           if (carnet && carnet.num_lezioni && carnet.num_lezioni > 0) {
             const nuoveLezioni = carnet.num_lezioni - 1;
             
             this.aggiornaCarnet(id, { num_lezioni: nuoveLezioni }).subscribe({
               next: (carnetAggiornato) => {
+                // restituisce carnet aggiornato
                 observer.next(carnetAggiornato);
                 observer.complete();
               },

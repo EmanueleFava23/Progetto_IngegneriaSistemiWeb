@@ -18,7 +18,7 @@
 
     <!-- Stato di caricamento -->
     @if (caricamento) {
-      <div class="loading-state" role="status" aria-live="polite">
+      <div class="loading-state" >
       <div class="spinner"></div>
       <p>Caricamento corsi in corso...</p>
       </div>
@@ -26,7 +26,7 @@
 
     <!-- Messaggio di errore -->
     @if (errore) {
-      <div class="error-state" role="alert" aria-live="assertive">
+      <div class="error-state" >
       <p>{{errore}}</p>
       <button (click)="caricaCorsi()" class="btn-retry">Riprova</button>
       </div>
@@ -46,6 +46,7 @@
       @for (corso of corsiFiltrati; track corso.id) {
         <app-card [dati]="corso"
          [tipo]='"corso"'
+         [utenti]="utenti"
          (Modifica)="DialogModificaCorso(corso)"
          (Elimina)="eliminaCorso(corso)"
          (Iscriviti)="Iscriviti(corso)"></app-card>
@@ -93,7 +94,7 @@
           <input 
             id="dataMin"
             type="date" 
-            [(ngModel)]="dataInizioMin" 
+            [(ngModel)]="dataInizio" 
             (change)="applicaFiltri()"
             class="filtro-date">
         </div>
@@ -104,7 +105,7 @@
           <input 
             id="dataMax"
             type="date" 
-            [(ngModel)]="dataInizioMax" 
+            [(ngModel)]="dataFine" 
             (change)="applicaFiltri()"
             class="filtro-date">
         </div>

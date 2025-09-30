@@ -1,16 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatCard, MatCardHeader,MatCardTitle,MatCardActions } from '@angular/material/card';
+import { MatCard, MatCardTitle,MatCardActions } from '@angular/material/card';
 import { MatCardContent } from '@angular/material/card';
-import { Documento } from '../../modelli/document.model';
 import { Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardSubtitle, MatCardFooter } from '@angular/material/card';
 import { CourseService } from '../../servizi/course.service';
-import { UserService } from '../../servizi/userService';
 import { User, UserRole } from '../../modelli/user.model';
 import { Sessione } from '../../servizi/sessione';
-import { LessonService } from '../../servizi/lesson.service';
+import { Corso } from '../../modelli/course.model';
 
 @Component({
   selector: 'app-card',
@@ -22,6 +19,8 @@ export class Card implements OnInit{
 
   @Input() dati!: any;
   @Input() tipo!: "corso" | "carnet" | "documento" | "lezione";
+  @Input() corsi: Corso[] = [];
+  @Input() utenti: User[] = [];
 
   @Output() Modifica = new EventEmitter<any>();
   @Output() Elimina = new EventEmitter<any>();
@@ -30,9 +29,6 @@ export class Card implements OnInit{
   ruoloUtente!: UserRole;
 
   constructor(
-    private router: Router,
-    private courseService: CourseService,
-    private userService: UserService,
     private sessione: Sessione
   ){};
 
@@ -44,101 +40,40 @@ export class Card implements OnInit{
     return new Date(data).toLocaleDateString('it-IT');
   }
 
-    //cosi evito loop infiniti
-  private corsiCache = new Map<number, string>();
-  private utentiCache = new Map<number, string>();
 
-  getNomeCorso(id: number): string{
-    if (this.corsiCache.has(id)) {
-      return this.corsiCache.get(id)!;
+  getNomeCorso(id: number): string {
+    if (!this.corsi || this.corsi.length === 0) {
+      return 'Caricamento';
     }
-
-    // Inizializza con un valore, per visualizzazione
-    this.corsiCache.set(id, 'Caricamento...');
     
-    this.courseService.getCorsoById(id).subscribe({
-      next: (corso: any) => {
-        this.corsiCache.set(id, corso[0].nome);
-      },
-      error: (err) => {
-        this.corsiCache.set(id, `ERRORE: ${err}`);
-      }
-    });
-    
-    return this.corsiCache.get(id)!;
-  };
+    const corso = this.corsi.find(c => c.id === id);
+    return corso ? corso.nome : 'Corso non trovato';
+  }
 
-  getNomeIstruttore(id: number): string{
-
-    if (this.utentiCache.has(id)) {
-      return this.utentiCache.get(id)!;
+  getNomeIstruttore(id: number): string {
+    if (!this.utenti || this.utenti.length === 0) {
+      return 'Caricamento';
     }
-
-    this.utentiCache.set(id, '');
-
-    this.userService.getUserById(id).subscribe({
-      next: (istru: User) => {
-        if(istru){
-          this.utentiCache.set(id, istru.nome);
-        }
-      },
-      error: (err)=> {
-        this.utentiCache.set(id, `ERRORE: ${err}`);
-      }
-    });
-
-    return this.utentiCache.get(id)!;
+    
+    const istruttore = this.utenti.find(u => u.id === id);
+    return istruttore ? `${istruttore.nome} ${istruttore.cognome}` : 'Istruttore non trovato';
   };
 
   getNomeSegretario(id: number): string{
-    let nomecompleto : string;
-
-    if (this.utentiCache.has(id)) {
-      return this.utentiCache.get(id)!;
+    if (!this.utenti || this.utenti.length === 0) {
+      return 'Caricamento';
     }
-
-    this.utentiCache.set(id, '');
-
-    this.userService.getUserById(id).subscribe({
-      next: (seg: User) => {
-        if(seg){
-          nomecompleto = seg.nome + ' ' + seg.cognome;
-          this.utentiCache.set(id, nomecompleto);
-        }
-      },
-      error: (err)=> {
-        this.utentiCache.set(id, `ERRORE: ${err}`);
-      }
-
-    });
-
-    return this.utentiCache.get(id)!;
+    
+    const segretario = this.utenti.find(u => u.id === id);
+    return segretario ? `${segretario.nome} ${segretario.cognome}` : 'Segretario non trovato';
   }
 
   getNomeCorsista(id: number): string{
-    console.log("ricerca nome");
-    let nomecompleto : string;
-
-    if (this.utentiCache.has(id)) {
-      return this.utentiCache.get(id)!;
+    if (!this.utenti || this.utenti.length === 0) {
+      return 'Caricamento';
     }
-
-    this.utentiCache.set(id, '');
-
-    this.userService.getUserById(id).subscribe({
-      next: (cors: User) => {
-        if(cors){
-          console.log(cors.nome);
-          nomecompleto = cors.nome + ' ' + cors.cognome;
-          this.utentiCache.set(id, nomecompleto);
-        }
-      },
-      error: (err)=> {
-        this.utentiCache.set(id, `ERRORE: ${err}`);
-      }
-
-    });
-
-    return this.utentiCache.get(id)!;
+    
+    const corsista = this.utenti.find(u => u.id === id);
+    return corsista ? `${corsista.nome} ${corsista.cognome}` : 'Corsista non trovato';
   }
 }

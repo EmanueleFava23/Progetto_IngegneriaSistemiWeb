@@ -19,12 +19,11 @@ import { takeWhile } from 'rxjs/operators';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements OnInit, OnDestroy {
+export class Home implements OnInit{
 
   utente: User | null = null;
   ruoloUtente: UserRole | null = null;
   isLoading: boolean = true;
-  private subscription?: Subscription;
 
   
   constructor(
@@ -33,28 +32,7 @@ export class Home implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    // Sottoscrivi agli aggiornamenti dell'utente
-    this.subscription = this.sessione.user$.subscribe(user => {
-      this.utente = user;
-      this.ruoloUtente = user?.ruolo || null;
-      
-      if (user && this.ruoloUtente) {
-        this.isLoading = false;
-      } else if (user) {
-        // Utente presente ma senza ruolo, aspetta un po'
-        setTimeout(() => {
-          this.ruoloUtente = this.sessione.getUserRole();
-          if (this.ruoloUtente) {
-            this.isLoading = false;
-          }
-        }, 100);
-      } else {
-        // Nessun utente
-        this.isLoading = false;
-      }
-    });
 
-    // Carica immediatamente se l'utente è già disponibile
     const currentUser = this.sessione.getLoggedUser();
     if (currentUser) {
       this.utente = currentUser;
@@ -65,9 +43,4 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
 }

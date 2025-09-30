@@ -36,10 +36,8 @@ export class Profilo implements OnInit {
   }
 
   loadUserProfile() {
-    // Simula caricamento dati utente
     this.user = this.sessione.getLoggedUser();
-    this.ruolo = this.sessione.getUserRole();
-    console.log(this.ruolo); 
+    this.ruolo = this.sessione.getUserRole(); 
     this.isLoading = false;
   }
 
@@ -50,17 +48,7 @@ export class Profilo implements OnInit {
     return new Date(dateString).toLocaleDateString('it-IT');
   }
 
-
-  
-
-  // Metodi per azioni del profilo
-  changePassword() {
-    console.log('Cambia password');
-    // Qui aprirai il modale per cambiare password
-  }
-
   logout() {
-    console.log('Logout');
     this.authService.logout();
   }
 }

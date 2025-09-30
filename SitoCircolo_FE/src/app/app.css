@@ -3,8 +3,16 @@
 /* Sidebar */
 mat-sidenav {
     background-color: rgb(6, 154, 195);
-    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 320px;
+    border-radius: 0;
+}
+
+app-navbar {
+    display: block;
+    overflow: hidden;
+    width: 100%;
 }
 
 /* Link della sidebar */
@@ -18,7 +26,7 @@ mat-sidenav mat-nav-list mat-list-item a {
     padding: 12px 0;
     text-decoration: none;
     color: white;
-    overflow: visible;
+    overflow: hidden;
 }
 
 /* Header principale */

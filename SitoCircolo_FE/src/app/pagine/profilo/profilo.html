@@ -58,16 +58,20 @@
         </div>
         
         <!-- Telefono -->
-        <div class="info-item" *ngIf="user?.telefono">
+        @if (user?.telefono) {
+        <div class="info-item">
           <label>Telefono</label>
           <span class="info-value">{{ user?.telefono }}</span>
         </div>
+        }
         
         <!-- Codice Fiscale -->
-        <div class="info-item" *ngIf="user?.cod_fiscale">
+        @if (user?.cod_fiscale) {
+        <div class="info-item">
           <label>Codice Fiscale</label>
           <span class="info-value">{{ user?.cod_fiscale }}</span>
         </div>
+        }
         
       </div>
     </mat-card-content>
@@ -84,7 +88,9 @@
 
 
   <!-- LOADING SPINNER -->
-  <div class="loading-container" *ngIf="isLoading">
-    <p>Caricamento profilo...</p>
-  </div>
+  @if (isLoading) {
+    <div class="loading-container">
+      <p>Caricamento profilo...</p>
+    </div>
+  }
 </div>

@@ -155,7 +155,6 @@ router.get("/:id/prenotazione", async (req, res) => {
 
         res.status(200);
         res.json(results);
-        console.log(results);
     }
     catch (err) {
         console.error("routes/lezioni.js: ", err.message, err.stack);

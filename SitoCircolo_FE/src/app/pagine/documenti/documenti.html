@@ -23,6 +23,7 @@
     @for(doc of documenti; track doc.id){
       <app-card [dati]="doc"
        [tipo]='"documento"'
+       [utenti]="utenti"
        (Modifica)="DialogModificaDocumento($event)"
        (Elimina)="EliminaDocumento($event)"
        ></app-card>

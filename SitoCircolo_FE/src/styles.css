@@ -18,6 +18,8 @@ html, body {
 .sidenav-container {
     height: 100vh;
     position: fixed;
+    overflow-y: auto;
+    overflow-x: hidden;
     top: 0;
     left: 0;
     right: 0;

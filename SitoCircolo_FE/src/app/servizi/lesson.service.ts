@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lezione } from '../modelli/lesson.model';
 import { User } from '../modelli/user.model';
-import { ConstantPool } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'

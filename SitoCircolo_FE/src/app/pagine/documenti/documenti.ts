@@ -9,6 +9,7 @@ import { Sessione } from '../../servizi/sessione';
 import { User, UserRole } from '../../modelli/user.model';
 import { Documento } from '../../modelli/document.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../../servizi/userService';
 
 @Component({
   selector: 'app-documenti',
@@ -20,11 +21,13 @@ export class Documenti implements OnInit {
 
   user: User | null = null;
   documenti : Documento[] | null = null;
+  utenti: User[] = [];
 
   ruoloUtente! : UserRole;
 
   ngOnInit(): void {
     this.ruoloUtente = this.sessione.getUserRole();
+    this.caricaUtenti();
     if(this.ruoloUtente === 'SEGRETARIO'){
       this.getTuttiDocumenti();
     }
@@ -37,8 +40,20 @@ export class Documenti implements OnInit {
     private dialog: MatDialog,
     private docService: DocumentService,
     private sessione: Sessione,
-    private messaggio: MatSnackBar
+    private messaggio: MatSnackBar,
+    private userService: UserService
   ){};
+
+  caricaUtenti(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (utenti) => {
+        this.utenti = utenti;
+      },
+      error: () => {
+        console.error("Errore nel caricamento degli utenti");
+      }
+    });
+  }
 
   DialogNuovoDocumento(){
     const dialogRef = this.dialog.open(AggiungiDocumentoDialog);

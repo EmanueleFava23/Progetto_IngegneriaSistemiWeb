@@ -44,6 +44,8 @@
                     @if(ruoloUtente === 'CORSISTA' && lezione.stato === 'approvata'){
                         <app-card [tipo]='"lezione"' 
                         [dati]="lezione"
+                        [corsi]="corsi"
+                        [utenti]="utenti"
                         (Modifica)="dialogModificaLezione(lezione)"
                         (Elimina)="eliminaLezione(lezione.id)"
                         (Iscriviti)="iscriviti(lezione.id)"></app-card>
@@ -51,6 +53,8 @@
                     @else if(ruoloUtente !== 'CORSISTA'){
                         <app-card [tipo]='"lezione"' 
                         [dati]="lezione"
+                        [corsi]="corsi"
+                        [utenti]="utenti"
                         (Modifica)="dialogModificaLezione(lezione)"
                         (Elimina)="eliminaLezione(lezione.id)"
                         (Iscriviti)="iscriviti(lezione.id)"></app-card>
@@ -102,19 +106,21 @@
                 </select>
             </div>
 
-            <div class="filtro-group">
-                <label for="stato">Stato lezione:</label>
-                <select 
-                    id="stato" 
-                    [(ngModel)]="stato" 
-                    (change)="applicaFiltri()"
-                    class="filtro-select">
-                    <option value=''>Tutti gli stati</option>
-                    <option value='proposta'>Proposta</option>
-                    <option value='approvata'>Approvata</option>
-                    <option value='completata'>Completato</option>
-                </select>
-            </div>
+            @if(ruoloUtente !== 'CORSISTA') {
+                <div class="filtro-group">
+                    <label for="stato">Stato lezione:</label>
+                    <select 
+                        id="stato" 
+                        [(ngModel)]="stato" 
+                        (change)="applicaFiltri()"
+                        class="filtro-select">
+                        <option value=''>Tutti gli stati</option>
+                        <option value='proposta'>Proposta</option>
+                        <option value='approvata'>Approvata</option>
+                        <option value='completata'>Completato</option>
+                    </select>
+                </div>
+            }
 
             <div class="filtri-actions">
                 <button 
